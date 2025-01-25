@@ -19,7 +19,7 @@ class KeywordsExtractorTest extends TestCase
     #[Test]
     public function it_can_extract_a_keyword(): void
     {
-        $keywords = $this->extractor->generate('test');
+        $keywords = $this->extractor->extract('test');
 
         $this->assertSame('test', $keywords);
     }
@@ -27,7 +27,7 @@ class KeywordsExtractorTest extends TestCase
     #[Test]
     public function it_can_extract_keywords(): void
     {
-        $keywords = $this->extractor->generate('this is a test');
+        $keywords = $this->extractor->extract('this is a test');
 
         $this->assertSame('test', $keywords);
     }
@@ -48,7 +48,7 @@ class KeywordsExtractorTest extends TestCase
             'add_words' => 'this',
         ]);
 
-        $keywords = $extractor->generate('this is a test');
+        $keywords = $extractor->extract('this is a test');
 
         $this->assertSame('this, test', $keywords);
     }
@@ -69,7 +69,7 @@ class KeywordsExtractorTest extends TestCase
             'remove_words' => 'test',
         ]);
 
-        $keywords = $extractor->generate('this is a test');
+        $keywords = $extractor->extract('this is a test');
 
         $this->assertSame('', $keywords);
     }
@@ -79,7 +79,7 @@ class KeywordsExtractorTest extends TestCase
     {
         $text = 'The keywords generator greets the world!';
 
-        $keywords = $this->extractor->generate($text);
+        $keywords = $this->extractor->extract($text);
 
         $this->assertSame('keywords generator greets, world', $keywords);
     }

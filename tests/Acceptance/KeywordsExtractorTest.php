@@ -18,7 +18,7 @@ class KeywordsExtractorTest extends TestCase
     #[Test]
     public function it_should_handle_an_empty_string(): void
     {
-        $keywords = $this->extractor->generate(' ');
+        $keywords = $this->extractor->extract(' ');
 
         $this->assertEmpty($keywords);
     }
@@ -26,7 +26,7 @@ class KeywordsExtractorTest extends TestCase
     #[Test]
     public function it_should_generate_keywords(): void
     {
-        $keywords = $this->extractor->generate('this is a test');
+        $keywords = $this->extractor->extract('this is a test');
 
         $this->assertNotEmpty($keywords);
         $this->assertSame('test', $keywords);
@@ -39,7 +39,7 @@ class KeywordsExtractorTest extends TestCase
             'add_words' => 'new',
         ]);
 
-        $keywords = $extractor->generate('New York City is a beautiful one');
+        $keywords = $extractor->extract('New York City is a beautiful one');
 
         $this->assertSame('new york city, beautiful', $keywords);
     }
@@ -51,7 +51,7 @@ class KeywordsExtractorTest extends TestCase
             'add_words' => 'New',
         ]);
 
-        $keywords = $extractor->generate('New York City is a new beautiful one');
+        $keywords = $extractor->extract('New York City is a new beautiful one');
 
         $this->assertSame('new york city, beautiful', $keywords);
     }

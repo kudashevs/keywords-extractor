@@ -88,7 +88,7 @@ class KeywordsExtractor
         $this->extractor = new (self::DEFAULT_EXTRACTOR)($this->options);
     }
 
-    public function generate(string $text): string
+    public function extract(string $text): string
     {
         $words = $this->extractor->extract($text);
 
