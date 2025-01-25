@@ -21,8 +21,8 @@ class KeywordsExtractor
     ];
 
     /**
-     * 'add_words'      string|array A string or an array with words to add to the result (if they are ignored by an Extractor).
-     * 'remove_words'   string|array An string or an array with words to remove from the result (if they are not ignored by an Extractor).
+     * 'add_words'      string|array A string or an array of words to add to the result (if they are ignored by an Extractor).
+     * 'remove_words'   string|array A string or an array of words to remove from the result (if they are not ignored by an Extractor).
      *
      * @param array{
      *     add_words?: string|array<array-key, string>,
@@ -98,6 +98,12 @@ class KeywordsExtractor
         $this->extractor = new (self::DEFAULT_EXTRACTOR)($this->options);
     }
 
+    /**
+     * Extract relevant keywords from a text.
+     *
+     * @param string $text
+     * @return string
+     */
     public function extract(string $text): string
     {
         $words = $this->extractor->extract($text);
@@ -105,6 +111,11 @@ class KeywordsExtractor
         return implode(', ', $words);
     }
 
+    /**
+     * Allow words to be extracted if they are ignored by an Extractor.
+     *
+     * @param string|array<array-key, string> $words
+     */
     public function addWords(string|array $words): static
     {
         $newWords = is_string($words) ? [$words] : $words;
@@ -113,6 +124,11 @@ class KeywordsExtractor
         return $this;
     }
 
+    /**
+     * Disallow words to be extracted if they are ignored by an Extractor.
+     *
+     * @param string|array<array-key, string> $words
+     */
     public function removeWords(string|array $words): static
     {
         $newWords = is_string($words) ? [$words] : $words;
