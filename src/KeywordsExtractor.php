@@ -28,6 +28,12 @@ class KeywordsExtractor
 
     protected function initOptions(array $options): void
     {
+        $this->initAddOption($options);
+        $this->initRemoveOption($options);
+    }
+
+    protected function initAddOption(array $options): void
+    {
         if (
             isset($options['add_words'])
             && !is_string($options['add_words'])
@@ -39,7 +45,10 @@ class KeywordsExtractor
         $this->options['add'] = (is_string($options['add_words']))
             ? [$options['add_words']]
             : $options['add_words'];
+    }
 
+    protected function initRemoveOption(array $options): void
+    {
         if (
             isset($options['remove_words'])
             && !is_string($options['remove_words'])
