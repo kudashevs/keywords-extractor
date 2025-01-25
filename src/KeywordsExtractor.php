@@ -56,13 +56,18 @@ class KeywordsExtractor
             return;
         }
 
-        if (!is_string($options['add_words']) && !is_array($options['add_words'])) {
-            throw new InvalidOptionType('The add_words option must be a string or an array.');
-        }
+        $this->validateAddOption($options);
 
         $this->options['add'] = (is_string($options['add_words']))
             ? [$options['add_words']]
             : $options['add_words'];
+    }
+
+    protected function validateAddOption(array $options): void
+    {
+        if (!is_string($options['add_words']) && !is_array($options['add_words'])) {
+            throw new InvalidOptionType('The add_words option must be a string or an array.');
+        }
     }
 
     /**
@@ -74,13 +79,18 @@ class KeywordsExtractor
             return;
         }
 
-        if (!is_string($options['remove_words']) && !is_array($options['remove_words'])) {
-            throw new InvalidOptionType('The remove_words option must be a string or an array.');
-        }
+        $this->validateRemoveOption($options);
 
         $this->options['remove'] = (is_string($options['remove_words']))
             ? [$options['remove_words']]
             : $options['remove_words'];
+    }
+
+    protected function validateRemoveOption(array $options): void
+    {
+        if (!is_string($options['remove_words']) && !is_array($options['remove_words'])) {
+            throw new InvalidOptionType('The remove_words option must be a string or an array.');
+        }
     }
 
     protected function initExtractor(): void
