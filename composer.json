@@ -1,8 +1,8 @@
 {
     "name": "kudashevs/keywords-extractor",
-    "description": "A library that that extracts relevant keywords from text.",
+    "description": "A flexible and customizable PHP library that extracts relevant keywords from text.",
     "type": "library",
-    "keywords": ["php", "keywords", "keywords extractor"],
+    "keywords": ["php", "keywords", "keywords extractor", "keywords generator"],
     "license": "MIT",
     "authors": [
         {
