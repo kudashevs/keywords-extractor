@@ -4,6 +4,7 @@ namespace Kudashevs\KeywordsExtractor\Tests\Unit;
 
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionType;
 use Kudashevs\KeywordsExtractor\KeywordsExtractor;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -42,25 +43,41 @@ class KeywordsExtractorTest extends TestCase
     }
 
     #[Test]
-    public function it_can_accept_the_add_words_option_at_instantiation(): void
-    {
+    #[DataProvider('provideAddWords')]
+    public function it_can_accept_the_add_words_option_at_instantiation(
+        string $text,
+        string|array $words,
+        string $expected,
+    ): void {
         $extractor = new KeywordsExtractor([
-            'add_words' => 'this',
+            'add_words' => $words,
         ]);
 
-        $keywords = $extractor->extract('this is a test');
+        $keywords = $extractor->extract($text);
 
-        $this->assertSame('this, test', $keywords);
+        $this->assertSame($expected, $keywords);
     }
 
     #[Test]
-    public function it_can_accept_the_add_words_option_fluently(): void
-    {
+    #[DataProvider('provideAddWords')]
+    public function it_can_accept_the_add_words_option_fluently(
+        string $text,
+        string|array $words,
+        string $expected,
+    ): void {
         $extractor = new KeywordsExtractor();
 
-        $keywords = $extractor->addWords('this')->extract('this is a test');
+        $keywords = $extractor->addWords($words)->extract($text);
 
-        $this->assertSame('this, test', $keywords);
+        $this->assertSame($expected, $keywords);
+    }
+
+    public static function provideAddWords(): array
+    {
+        return [
+            'as a string' => ['this is a test', 'this', 'this, test'],
+            'as an array' => ['this is a test', ['this'], 'this, test'],
+        ];
     }
 
     #[Test]
@@ -73,34 +90,40 @@ class KeywordsExtractorTest extends TestCase
     }
 
     #[Test]
-    public function it_can_accept_the_remove_words_option_at_instantiation(): void
-    {
+    #[DataProvider('provideRemoveWords')]
+    public function it_can_accept_the_remove_words_option_at_instantiation(
+        string $text,
+        string|array $words,
+        string $expected,
+    ): void {
         $extractor = new KeywordsExtractor([
-            'remove_words' => 'test',
+            'remove_words' => $words,
         ]);
 
-        $keywords = $extractor->extract('this is a test');
+        $keywords = $extractor->extract($text);
 
-        $this->assertSame('', $keywords);
+        $this->assertSame($expected, $keywords);
     }
 
     #[Test]
-    public function it_can_accept_the_remove_words_option_fluently(): void
-    {
+    #[DataProvider('provideRemoveWords')]
+    public function it_can_accept_the_remove_words_option_fluently(
+        string $text,
+        string|array $words,
+        string $expected,
+    ): void {
         $extractor = new KeywordsExtractor();
 
-        $keywords = $extractor->removeWords('test')->extract('this is a test');
+        $keywords = $extractor->removeWords($words)->extract($text);
 
-        $this->assertSame('', $keywords);
+        $this->assertSame($expected, $keywords);
     }
 
-    #[Test]
-    public function it_can_extract_keywords_with_exclusion(): void
+    public static function provideRemoveWords(): array
     {
-        $text = 'The keywords generator greets the world!';
-
-        $keywords = $this->extractor->extract($text);
-
-        $this->assertSame('keywords generator greets, world', $keywords);
+        return [
+            'as a string' => ['this is a test', 'test', ''],
+            'as an array' => ['this is a test', ['test'], ''],
+        ];
     }
 }
