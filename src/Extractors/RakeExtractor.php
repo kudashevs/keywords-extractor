@@ -10,9 +10,12 @@ final class RakeExtractor implements Extractor
 {
     private Rake $extractor;
 
-    public function __construct()
+    public function __construct(array $options = [])
     {
-        $this->extractor = new Rake();
+        $this->extractor = new Rake([
+            'exclude' => $options['add'] ?? [],
+            'include' => $options['remove'] ?? [],
+        ]);
     }
 
     public function extract(string $text): array

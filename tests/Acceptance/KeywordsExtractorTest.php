@@ -31,4 +31,28 @@ class KeywordsExtractorTest extends TestCase
         $this->assertNotEmpty($keywords);
         $this->assertSame('test', $keywords);
     }
+
+    #[Test]
+    public function it_should_generate_keywords_with_an_added_keyword(): void
+    {
+        $extractor = new KeywordsExtractor([
+            'add_words' => 'new',
+        ]);
+
+        $keywords = $extractor->generate('New York City is a beautiful one');
+
+        $this->assertSame('new york city, beautiful', $keywords);
+    }
+
+    #[Test]
+    public function it_should_generate_keywords_with_an_added_special_case(): void
+    {
+        $extractor = new KeywordsExtractor([
+            'add_words' => 'New',
+        ]);
+
+        $keywords = $extractor->generate('New York City is a new beautiful one');
+
+        $this->assertSame('new york city, beautiful', $keywords);
+    }
 }
