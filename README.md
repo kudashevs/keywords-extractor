@@ -1,5 +1,8 @@
-Keywords Extractor
-==========================
+# Keywords Extractor
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/kudashevs/keywords-extractor.svg)](https://packagist.org/packages/kudashevs/keywords-extractor)
+[![Run Tests](https://github.com/kudashevs/keywords-extractor/actions/workflows/run-tests.yml/badge.svg)](https://github.com/kudashevs/keywords-extractor/actions/workflows/run-tests.yml)
+[![License MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
 The `keywords-extractor` is a flexible and customizable PHP library that extracts relevant keywords from text.
 
