@@ -1,7 +1,7 @@
 Keywords Extractor
 ==========================
 
-The `keywords-extractor` is a PHP library that extracts relevant keywords from text.
+The `keywords-extractor` is a flexible and customizable PHP library that extracts relevant keywords from text.
 
 
 ## Installation
