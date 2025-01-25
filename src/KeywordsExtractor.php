@@ -52,11 +52,11 @@ class KeywordsExtractor
      */
     protected function initAddOption(array $options): void
     {
-        if (
-            isset($options['add_words'])
-            && !is_string($options['add_words'])
-            && !is_array($options['add_words'])
-        ) {
+        if (!isset($options['add_words'])) {
+            return;
+        }
+
+        if (!is_string($options['add_words']) && !is_array($options['add_words'])) {
             throw new InvalidOptionType('The add_words option must be a string or an array.');
         }
 
@@ -70,11 +70,11 @@ class KeywordsExtractor
      */
     protected function initRemoveOption(array $options): void
     {
-        if (
-            isset($options['remove_words'])
-            && !is_string($options['remove_words'])
-            && !is_array($options['remove_words'])
-        ) {
+        if (!isset($options['remove_words'])) {
+            return;
+        }
+
+        if (!is_string($options['remove_words']) && !is_array($options['remove_words'])) {
             throw new InvalidOptionType('The remove_words option must be a string or an array.');
         }
 
