@@ -12,6 +12,40 @@ composer require kudashevs/keywords-extractor
 ```
 
 
+## Usage
+
+The key feature of the `keywords-extractor` library is the possibility to extract not just individual nouns, but the
+meaningful sequences of words that make more sense in some contexts. This possibility is provided by the RAKE PHP
+library that is used as a default extraction algorithm. If this library doesn't suit your need, it can be substituted
+with something more appropriate or relevant.
+
+The behavior of the `KeywordsExtractor` class is pretty straightforward. To extract keywords just call the `generate` method:
+```php
+use Kudashevs\KeywordsExtractor\KeywordsExtractor;
+
+$extractor = new KeywordsExtractor([
+    'add_words' => 'some',
+    'remove_words' => 'interesting'
+]);
+
+$keywords = $extractor->extract('this is some interesting text');
+
+print_r($keywords); // some, text
+```
+
+To make this library even more convenient to use in some specific cases, provides a fluent interface. 
+```php
+use Kudashevs\KeywordsExtractor\KeywordsExtractor;
+
+$extractor = new KeywordsExtractor();
+
+$keywords = $extractor->addWords(['this', 'example'])
+    ->extract('this is a usage example');
+    
+print_r($keywords); // usage example, this
+```
+
+
 ## Options
 
 The `KeywordsExtractor` class accepts some configuration options:
