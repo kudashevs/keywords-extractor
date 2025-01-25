@@ -42,13 +42,23 @@ class KeywordsExtractorTest extends TestCase
     }
 
     #[Test]
-    public function it_can_add_words_before_extracting_keywords(): void
+    public function it_can_accept_the_add_words_option_at_instantiation(): void
     {
         $extractor = new KeywordsExtractor([
             'add_words' => 'this',
         ]);
 
         $keywords = $extractor->extract('this is a test');
+
+        $this->assertSame('this, test', $keywords);
+    }
+
+    #[Test]
+    public function it_can_accept_the_add_words_option_fluently(): void
+    {
+        $extractor = new KeywordsExtractor();
+
+        $keywords = $extractor->addWords('this')->extract('this is a test');
 
         $this->assertSame('this, test', $keywords);
     }
@@ -63,13 +73,23 @@ class KeywordsExtractorTest extends TestCase
     }
 
     #[Test]
-    public function it_can_remove_words_before_extracting_keywords(): void
+    public function it_can_accept_the_remove_words_option_at_instantiation(): void
     {
         $extractor = new KeywordsExtractor([
             'remove_words' => 'test',
         ]);
 
         $keywords = $extractor->extract('this is a test');
+
+        $this->assertSame('', $keywords);
+    }
+
+    #[Test]
+    public function it_can_accept_the_remove_words_option_fluently(): void
+    {
+        $extractor = new KeywordsExtractor();
+
+        $keywords = $extractor->removeWords('test')->extract('this is a test');
 
         $this->assertSame('', $keywords);
     }

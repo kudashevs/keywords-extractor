@@ -104,4 +104,20 @@ class KeywordsExtractor
 
         return implode(', ', $words);
     }
+
+    public function addWords(string|array $words): static
+    {
+        $newWords = is_string($words) ? [$words] : $words;
+        $this->extractor->addWords($newWords);
+
+        return $this;
+    }
+
+    public function removeWords(string|array $words): static
+    {
+        $newWords = is_string($words) ? [$words] : $words;
+        $this->extractor->removeWords($newWords);
+
+        return $this;
+    }
 }

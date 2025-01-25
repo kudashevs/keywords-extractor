@@ -16,4 +16,20 @@ interface Extractor
      * @return array<string, int|float>
      */
     public function extract(string $text): array;
+
+    /**
+     * An array of words to add to the result.
+     *
+     * @param array<array-key, string> $words
+     * @return void
+     */
+    public function addWords(array $words): void;
+
+    /**
+     * An array of words to remove from the result.
+     *
+     * @param array<array-key, string> $words
+     * @return void
+     */
+    public function removeWords(array $words): void;
 }
