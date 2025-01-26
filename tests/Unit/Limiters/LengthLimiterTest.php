@@ -2,6 +2,7 @@
 
 namespace Kudashevs\KeywordsExtractor\Tests\Unit\Limiters;
 
+use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 use Kudashevs\KeywordsExtractor\Limiters\LengthLimiter;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -13,6 +14,15 @@ class LengthLimiterTest extends TestCase
     protected function setUp(): void
     {
         $this->limiter = new LengthLimiter();
+    }
+
+    #[Test]
+    public function it_throws_an_exception_when_max_length_is_less_than_0(): void
+    {
+        $this->expectException(InvalidOptionValue::class);
+        $this->expectExceptionMessage('max length');
+
+        new LengthLimiter(-1);
     }
 
     #[Test]
