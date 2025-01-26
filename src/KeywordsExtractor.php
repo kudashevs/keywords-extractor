@@ -163,7 +163,7 @@ class KeywordsExtractor
 
     protected function validateLimiterOption(array $options): void
     {
-        if (!is_object($options['limiter']) || !is_a($options['limiter'], Extractor::class)) {
+        if (!is_object($options['limiter']) || !is_a($options['limiter'], Limiter::class)) {
             throw new InvalidOptionType('The limiter option must be of type Limiter.');
         }
     }

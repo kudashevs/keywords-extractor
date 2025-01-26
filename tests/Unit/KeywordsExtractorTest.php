@@ -3,7 +3,9 @@
 namespace Kudashevs\KeywordsExtractor\Tests\Unit;
 
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionType;
+use Kudashevs\KeywordsExtractor\Extractors\Extractor;
 use Kudashevs\KeywordsExtractor\KeywordsExtractor;
+use Kudashevs\KeywordsExtractor\Limiters\Limiter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -27,12 +29,34 @@ class KeywordsExtractorTest extends TestCase
     }
 
     #[Test]
+    public function it_can_use_a_different_extractor(): void
+    {
+        $stub = $this->createStub(Extractor::class);
+
+        new KeywordsExtractor(['extractor' => $stub]);
+
+        // assert that no exceptions were thrown
+        $this->addToAssertionCount(1);
+    }
+
+    #[Test]
     public function it_throws_an_exception_when_a_wrong_limiter_type(): void
     {
         $this->expectException(InvalidOptionType::class);
         $this->expectExceptionMessage('limiter');
 
         new KeywordsExtractor(['limiter' => new \stdClass()]);
+    }
+
+    #[Test]
+    public function it_can_use_a_different_limiter(): void
+    {
+        $stub = $this->createStub(Limiter::class);
+
+        new KeywordsExtractor(['limiter' => $stub]);
+
+        // assert that no exceptions were thrown
+        $this->addToAssertionCount(1);
     }
 
     #[Test]
