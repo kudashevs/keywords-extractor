@@ -6,6 +6,8 @@ namespace Kudashevs\KeywordsExtractor\Limiters;
 
 final class LengthLimiter implements Limiter
 {
+    use Limitable;
+
     const MAX_LIMIT_LENGTH = 255;
 
     private int $maxLength;
@@ -29,11 +31,6 @@ final class LengthLimiter implements Limiter
         return $this->cleanUp($limited);
     }
 
-    private function isLimitless(): bool
-    {
-        return $this->maxLength === 0;
-    }
-
     private function prepare(string $text): string
     {
         $cut = mb_substr($text, 0, $this->maxLength);
@@ -41,26 +38,5 @@ final class LengthLimiter implements Limiter
         $lastSpacePosition = $this->findLastPosition($cut, ' ');
 
         return mb_substr($cut, 0, $lastSpacePosition);
-    }
-
-    private function findLastPosition(string $text, string $char)
-    {
-        $textLength = mb_strlen($text);
-        $currentPosition = $textLength - 1;
-
-        while ($currentPosition > 0) {
-            if ($text[$currentPosition] === $char) {
-                return $currentPosition;
-            }
-
-            $currentPosition--;
-        }
-
-        return $textLength;
-    }
-
-    private function cleanUp(string $text): string
-    {
-        return rtrim($text, ', ');
     }
 }
