@@ -21,6 +21,7 @@ class KeywordsExtractor
     ];
 
     /**
+     * 'extractor'      Extractor An instance of an Extractor (@see Extractor::class).
      * 'add_words'      string|array A string or an array of words to add to the result (if they are ignored by an Extractor).
      * 'remove_words'   string|array A string or an array of words to remove from the result (if they are not ignored by an Extractor).
      *
@@ -35,7 +36,7 @@ class KeywordsExtractor
     {
         $this->initOptions($options);
 
-        $this->initExtractor();
+        $this->initExtractor($options);
     }
 
     /**
@@ -93,9 +94,27 @@ class KeywordsExtractor
         }
     }
 
-    protected function initExtractor(): void
+    /**
+     * @param array{extractor?: Extractor} $options
+     */
+    protected function initExtractor(array $options): void
     {
-        $this->extractor = new (self::DEFAULT_EXTRACTOR)($this->options);
+        $extractor = static::DEFAULT_EXTRACTOR;
+
+        if (isset($options['extractor'])) {
+            $this->validateExtractorOption($options);
+
+            $extractor = $options['extractor'];
+        }
+
+        $this->extractor = new $extractor($this->options);
+    }
+
+    protected function validateExtractorOption(array $options): void
+    {
+        if (!is_object($options['extractor']) || !is_a($options['extractor'], Extractor::class)) {
+            throw new InvalidOptionType('The extractor option must be of type Extractor.');
+        }
     }
 
     /**
