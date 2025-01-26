@@ -149,15 +149,14 @@ class KeywordsExtractor
      */
     protected function initLimiter(array $options): void
     {
-        $limiter = static::DEFAULT_LIMITER;
-
         if (isset($options['limiter'])) {
             $this->validateLimiterOption($options);
+            $this->limiter = $options['limiter'];
 
-            $limiter = $options['limiter'];
+            return;
         }
 
-        $this->limiter = new $limiter($this->options['length']);
+        $this->limiter = new (static::DEFAULT_LIMITER)($this->options['length']);
     }
 
     protected function validateLimiterOption(array $options): void
