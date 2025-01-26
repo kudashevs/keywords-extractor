@@ -16,7 +16,7 @@ class LengthLimiterTest extends TestCase
     }
 
     #[Test]
-    public function it_can_limit_a_text(): void
+    public function it_can_limit_a_text_without_spaces(): void
     {
         $expected = LengthLimiter::MAX_LIMIT_LENGTH - 1;
 
@@ -25,6 +25,17 @@ class LengthLimiterTest extends TestCase
         $limited = $this->limiter->limit($sequence);
 
         $this->assertSame($expected, strlen($limited));
+    }
+
+    #[Test]
+    public function it_can_limit_a_text(): void
+    {
+        $limiter = new LengthLimiter(10);
+        $text = 'new york city, beautiful';
+
+        $limited = $limiter->limit($text);
+
+        $this->assertSame('new york', $limited);
     }
 
     #[Test]
