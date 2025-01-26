@@ -34,7 +34,7 @@ final class LengthLimiter implements Limiter
     public function limit(string $text): string
     {
         if ($this->isLimitless()) {
-            return $text;
+            return $this->cleanUp($text);
         }
 
         $limited = $this->prepare($text);
