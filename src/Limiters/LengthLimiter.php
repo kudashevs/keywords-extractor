@@ -24,9 +24,9 @@ final class LengthLimiter implements Limiter
             return $text;
         }
 
-        $cut = mb_substr($text, 0, $this->maxLength);
+        $limited = $this->prepare($text);
 
-        return $this->cleanUp($cut);
+        return $this->cleanUp($limited);
     }
 
     private function isLimitless(): bool
@@ -34,8 +34,33 @@ final class LengthLimiter implements Limiter
         return $this->maxLength === 0;
     }
 
+    private function prepare(string $text): string
+    {
+        $cut = mb_substr($text, 0, $this->maxLength);
+
+        $lastSpacePosition = $this->findLastPosition($text, ' ');
+
+        return mb_substr($cut, 0, $lastSpacePosition);
+    }
+
+    private function findLastPosition(string $text, string $char)
+    {
+        $lastPosition = mb_strlen($text);
+        $currentPosition = $lastPosition - 1;
+
+        while ($currentPosition > 0) {
+            if ($text[$currentPosition] === $char) {
+                return $currentPosition;
+            }
+
+            $currentPosition--;
+        }
+
+        return $lastPosition;
+    }
+
     private function cleanUp(string $text): string
     {
-        return rtrim($text, ',');
+        return rtrim($text, ', ');
     }
 }

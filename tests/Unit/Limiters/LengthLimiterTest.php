@@ -52,6 +52,17 @@ class LengthLimiterTest extends TestCase
         $this->assertGreaterThan($default, strlen($limited));
     }
 
+    #[Test]
+    public function it_can_use_external_limit_value_and_limit_to_some_extent(): void
+    {
+        $limiter = new LengthLimiter(16);
+        $text = 'new york city, beautiful';
+
+        $limited = $limiter->limit($text);
+
+        $this->assertSame('new york city', $limited);
+    }
+
     private function generateSequence(int $length): string
     {
         return str_repeat('A', $length);
