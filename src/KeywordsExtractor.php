@@ -99,19 +99,6 @@ class KeywordsExtractor
     }
 
     /**
-     * Extract relevant keywords from a text.
-     *
-     * @param string $text
-     * @return string
-     */
-    public function extract(string $text): string
-    {
-        $words = $this->extractor->extract($text);
-
-        return implode(', ', $words);
-    }
-
-    /**
      * Allow words to be extracted if they are ignored by an Extractor.
      *
      * @param string|array<array-key, string> $words
@@ -135,5 +122,18 @@ class KeywordsExtractor
         $this->extractor->removeWords($newWords);
 
         return $this;
+    }
+
+    /**
+     * Extract relevant keywords from a text.
+     *
+     * @param string $text
+     * @return string
+     */
+    public function extract(string $text): string
+    {
+        $words = $this->extractor->extract($text);
+
+        return implode(', ', $words);
     }
 }
