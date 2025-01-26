@@ -6,13 +6,6 @@ namespace Kudashevs\KeywordsExtractor\Limiters;
 
 trait Limitable
 {
-    private int $maxLength;
-
-    private function isLimitless(): bool
-    {
-        return $this->maxLength === 0;
-    }
-
     private function findLastPosition(string $text, string $char)
     {
         $textLength = mb_strlen($text);

@@ -42,6 +42,11 @@ final class LengthLimiter implements Limiter
         return $this->cleanUp($limited);
     }
 
+    private function isLimitless(): bool
+    {
+        return $this->maxLength === 0;
+    }
+
     private function prepare(string $text): string
     {
         $cut = mb_substr($text, 0, $this->maxLength);
