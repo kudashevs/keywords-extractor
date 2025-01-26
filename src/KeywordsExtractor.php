@@ -204,6 +204,8 @@ class KeywordsExtractor
     {
         $words = $this->extractor->extract($text);
 
-        return implode(', ', $words);
+        $keywords = implode(', ', $words);
+
+        return $this->limiter->limit($keywords);
     }
 }

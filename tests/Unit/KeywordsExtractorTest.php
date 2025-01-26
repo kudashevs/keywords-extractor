@@ -153,4 +153,14 @@ class KeywordsExtractorTest extends TestCase
             'as an array' => ['this is a test', ['test'], ''],
         ];
     }
+
+    #[Test]
+    public function it_can_limit_the_result_from_the_limit_length_option(): void
+    {
+        $extractor = new KeywordsExtractor(['limit_length' => 5]);
+
+        $keywords = $extractor->extract('word, this is a test');
+
+        $this->assertSame('word', $keywords);
+    }
 }
