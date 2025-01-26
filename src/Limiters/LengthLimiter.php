@@ -45,8 +45,8 @@ final class LengthLimiter implements Limiter
 
     private function findLastPosition(string $text, string $char)
     {
-        $lastPosition = mb_strlen($text);
-        $currentPosition = $lastPosition - 1;
+        $textLength = mb_strlen($text);
+        $currentPosition = $textLength - 1;
 
         while ($currentPosition > 0) {
             if ($text[$currentPosition] === $char) {
@@ -56,7 +56,7 @@ final class LengthLimiter implements Limiter
             $currentPosition--;
         }
 
-        return $lastPosition;
+        return $textLength;
     }
 
     private function cleanUp(string $text): string
