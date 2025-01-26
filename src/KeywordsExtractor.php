@@ -37,6 +37,7 @@ class KeywordsExtractor
      *     limiter?: Limiter,
      *     add_words?: string|array<array-key, string>,
      *     remove_words?: string|array<array-key, string>,
+     *     limit_length: int,
      * } $options
      *
      * @throws InvalidArgumentException
@@ -56,6 +57,7 @@ class KeywordsExtractor
     {
         $this->initAddOption($options);
         $this->initRemoveOption($options);
+        $this->initLengthOption($options);
     }
 
     /**
@@ -102,6 +104,22 @@ class KeywordsExtractor
         if (!is_string($options['remove_words']) && !is_array($options['remove_words'])) {
             throw new InvalidOptionType('The remove_words option must be a string or an array.');
         }
+    }
+
+    /**
+     * @param array<array-key, string|array<array-key, string>> $options
+     */
+    protected function initLengthOption(array $options): void
+    {
+        if (!isset($options['limit_length'])) {
+            return;
+        }
+
+        if (!is_int($options['limit_length'])) {
+            throw new InvalidOptionType('The limit_length option must be an integer.');
+        }
+
+        $this->options['length'] = $options['limit_length'];
     }
 
     /**

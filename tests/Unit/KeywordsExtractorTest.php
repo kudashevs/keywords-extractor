@@ -36,6 +36,15 @@ class KeywordsExtractorTest extends TestCase
     }
 
     #[Test]
+    public function it_throws_an_exception_when_a_wrong_limit_length_type(): void
+    {
+        $this->expectException(InvalidOptionType::class);
+        $this->expectExceptionMessage('limit_length');
+
+        new KeywordsExtractor(['limit_length' => 'any']);
+    }
+
+    #[Test]
     public function it_can_extract_a_keyword(): void
     {
         $keywords = $this->extractor->extract('test');
