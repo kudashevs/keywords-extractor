@@ -27,6 +27,15 @@ class KeywordsExtractorTest extends TestCase
     }
 
     #[Test]
+    public function it_throws_an_exception_when_a_wrong_limiter_type(): void
+    {
+        $this->expectException(InvalidOptionType::class);
+        $this->expectExceptionMessage('limiter');
+
+        new KeywordsExtractor(['limiter' => new \stdClass()]);
+    }
+
+    #[Test]
     public function it_can_extract_a_keyword(): void
     {
         $keywords = $this->extractor->extract('test');

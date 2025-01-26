@@ -8,24 +8,33 @@ use InvalidArgumentException;
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionType;
 use Kudashevs\KeywordsExtractor\Extractors\Extractor;
 use Kudashevs\KeywordsExtractor\Extractors\RakeExtractor;
+use Kudashevs\KeywordsExtractor\Limiters\LengthLimiter;
+use Kudashevs\KeywordsExtractor\Limiters\Limiter;
 
 class KeywordsExtractor
 {
     protected const DEFAULT_EXTRACTOR = RakeExtractor::class;
+
+    protected const DEFAULT_LIMITER = LengthLimiter::class;
 
     protected Extractor $extractor;
 
     protected array $options = [
         'add' => [],
         'remove' => [],
+        'length' => 0, // by default, the result is limitless
     ];
 
     /**
      * 'extractor'      Extractor An instance of an Extractor (@see Extractor::class).
+     * 'limiter'        Limiter An instance of a Limiter (@see Limiter::class).
      * 'add_words'      string|array A string or an array of words to add to the result (if they are ignored by an Extractor).
      * 'remove_words'   string|array A string or an array of words to remove from the result (if they are not ignored by an Extractor).
+     * 'limit_length'   int An integer defines the maximum length of the result.
      *
      * @param array{
+     *     extractor?: Extractor,
+     *     limiter?: Limiter,
      *     add_words?: string|array<array-key, string>,
      *     remove_words?: string|array<array-key, string>,
      * } $options
@@ -37,6 +46,7 @@ class KeywordsExtractor
         $this->initOptions($options);
 
         $this->initExtractor($options);
+        $this->initLimiter($options);
     }
 
     /**
@@ -114,6 +124,29 @@ class KeywordsExtractor
     {
         if (!is_object($options['extractor']) || !is_a($options['extractor'], Extractor::class)) {
             throw new InvalidOptionType('The extractor option must be of type Extractor.');
+        }
+    }
+
+    /**
+     * @param array{limiter?: Limiter} $options
+     */
+    protected function initLimiter(array $options): void
+    {
+        $limiter = static::DEFAULT_LIMITER;
+
+        if (isset($options['limiter'])) {
+            $this->validateLimiterOption($options);
+
+            $limiter = $options['limiter'];
+        }
+
+        $this->limiter = new $limiter($this->options['length']);
+    }
+
+    protected function validateLimiterOption(array $options): void
+    {
+        if (!is_object($options['limiter']) || !is_a($options['limiter'], Extractor::class)) {
+            throw new InvalidOptionType('The limiter option must be of type Limiter.');
         }
     }
 
