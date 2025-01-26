@@ -127,15 +127,14 @@ class KeywordsExtractor
      */
     protected function initExtractor(array $options): void
     {
-        $extractor = static::DEFAULT_EXTRACTOR;
-
         if (isset($options['extractor'])) {
             $this->validateExtractorOption($options);
+            $this->extractor = $options['extractor'];
 
-            $extractor = $options['extractor'];
+            return;
         }
 
-        $this->extractor = new $extractor($this->options);
+        $this->extractor = new (static::DEFAULT_EXTRACTOR)($this->options);
     }
 
     protected function validateExtractorOption(array $options): void
