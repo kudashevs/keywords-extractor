@@ -1,0 +1,98 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Kudashevs\KeywordsExtractor\Limiters;
+
+use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
+
+final class PercentLimiter implements Limiter
+{
+    use Limitable;
+
+    const DEFAULT_PERCENT = 10;
+
+    private int $percent;
+
+    private int $maxLength;
+
+    public function __construct(int $percent = self::DEFAULT_PERCENT, int $maxLength = 0)
+    {
+        $this->initPercent($percent);
+        $this->initMaxLength($maxLength);
+    }
+
+    private function initPercent(int $maxPercent): void
+    {
+        if ($maxPercent <= 0) {
+            throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
+        }
+
+        if ($maxPercent > 100) {
+            throw new InvalidOptionValue('The max length value must be less or equal to 100.');
+        }
+
+        $this->percent = $maxPercent;
+    }
+
+    private function initMaxLength(int $maxLength): void
+    {
+        if ($maxLength < 0) {
+            throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
+        }
+
+        $this->maxLength = $maxLength;
+    }
+
+    public function limit(string $text): string
+    {
+        $maxLengthInPercent = $this->retrievePercentForCalculation();
+        $lengthFromPercent = (int)($maxLengthInPercent * mb_strlen($text) / 100);
+
+        /*
+         * When the behavior is limitless, the input text does not need to be processed.
+         */
+        if ($this->isLimitless($maxLengthInPercent)) {
+            return $this->cleanUp($text);
+        }
+
+        $limited = $this->prepare(
+            $text,
+            $this->findLimitedLength($maxLengthInPercent),
+        );
+
+        return $this->cleanUp($limited);
+    }
+
+    private function isLimitless(int $percent): bool
+    {
+        return $percent === 100 && $this->maxLength === 0;
+    }
+
+    private function retrievePercentForCalculation(): int
+    {
+        return (isset($this->percent) && $this->percent !== 0)
+            ? $this->percent
+            : self::DEFAULT_PERCENT;
+    }
+
+    private function findLimitedLength(int $candidate): int
+    {
+        return ($this->maxLength > 0 && $this->maxLength > $candidate)
+            ? $this->maxLength
+            : $candidate;
+    }
+
+    private function prepare(string $text, int $length): string
+    {
+        $cut = mb_substr($text, 0, $length);
+
+        if ($this->isEndOfText($cut)) {
+            return $cut;
+        }
+
+        $lastSpacePosition = $this->findLastPosition($cut, ' ');
+
+        return mb_substr($cut, 0, $lastSpacePosition);
+    }
+}
