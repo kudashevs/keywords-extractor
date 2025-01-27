@@ -54,9 +54,9 @@ final class LengthLimiter implements Limiter
             return $this->cleanUp($text);
         }
 
-        $limited = $this->prepare($text);
+        $limitedText = $this->prepare($text);
 
-        return $this->cleanUp($limited);
+        return $this->cleanUp($limitedText);
     }
 
     private function isBelowLimit(string $text): bool
