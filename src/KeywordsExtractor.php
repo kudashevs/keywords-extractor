@@ -13,14 +13,23 @@ use Kudashevs\KeywordsExtractor\Limiters\Limiter;
 
 class KeywordsExtractor
 {
+    /** @var class-string<Extractor> */
     protected const DEFAULT_EXTRACTOR = RakeExtractor::class;
 
+    /** @var class-string<Limiter> */
     protected const DEFAULT_LIMITER = LengthLimiter::class;
 
     protected Extractor $extractor;
 
     protected Limiter $limiter;
 
+    /**
+     * @var array{
+     *     length: int,
+     *     add: array<array-key, string>,
+     *     remove: array<array-key, string>,
+     * }
+     */
     protected array $options = [
         'length' => 0, // by default, the result is limitless
         'add' => [],
@@ -39,7 +48,7 @@ class KeywordsExtractor
      *     add_words?: string|array<array-key, string>,
      *     remove_words?: string|array<array-key, string>,
      *     limiter?: Limiter,
-     *     limit_length: int,
+     *     limit_length?: int,
      * } $options
      *
      * @throws InvalidArgumentException
@@ -53,7 +62,7 @@ class KeywordsExtractor
     }
 
     /**
-     * @param array<array-key, string|array<array-key, string>> $options
+     * @param array{extractor?: Extractor,add_words?: string|array<array-key, string>,remove_words?: string|array<array-key, string>,limiter?: Limiter, limit_length?: int} $options
      */
     protected function initOptions(array $options): void
     {
@@ -63,7 +72,7 @@ class KeywordsExtractor
     }
 
     /**
-     * @param array<array-key, string|array<array-key, string>> $options
+     * @param array{add_words?: string|array<array-key, string>} $options
      */
     protected function initAddOption(array $options): void
     {
@@ -78,6 +87,9 @@ class KeywordsExtractor
             : $options['add_words'];
     }
 
+    /**
+     * @param array{add_words: string|array<array-key, string>} $options
+     */
     protected function validateAddOption(array $options): void
     {
         if (!is_string($options['add_words']) && !is_array($options['add_words'])) {
@@ -86,7 +98,7 @@ class KeywordsExtractor
     }
 
     /**
-     * @param array<array-key, string|array<array-key, string>> $options
+     * @param array{remove_words?: string|array<array-key, string>} $options
      */
     protected function initRemoveOption(array $options): void
     {
@@ -101,6 +113,9 @@ class KeywordsExtractor
             : $options['remove_words'];
     }
 
+    /**
+     * @param array{remove_words: string|array<array-key, string>} $options
+     */
     protected function validateRemoveOption(array $options): void
     {
         if (!is_string($options['remove_words']) && !is_array($options['remove_words'])) {
@@ -109,7 +124,7 @@ class KeywordsExtractor
     }
 
     /**
-     * @param array<array-key, string|array<array-key, string>> $options
+     * @param array{limit_length?: int} $options
      */
     protected function initLengthOption(array $options): void
     {
@@ -139,6 +154,9 @@ class KeywordsExtractor
         $this->extractor = new (static::DEFAULT_EXTRACTOR)($this->options);
     }
 
+    /**
+     * @param array{extractor: Extractor} $options
+     */
     protected function validateExtractorOption(array $options): void
     {
         if (!is_object($options['extractor']) || !is_a($options['extractor'], Extractor::class)) {
@@ -161,6 +179,9 @@ class KeywordsExtractor
         $this->limiter = new (static::DEFAULT_LIMITER)($this->options['length']);
     }
 
+    /**
+     * @param array{limiter: Limiter} $options
+     */
     protected function validateLimiterOption(array $options): void
     {
         if (!is_object($options['limiter']) || !is_a($options['limiter'], Limiter::class)) {
