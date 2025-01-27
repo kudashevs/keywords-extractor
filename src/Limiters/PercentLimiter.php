@@ -57,7 +57,7 @@ final class PercentLimiter implements Limiter
 
         $lengthFromPercent = (int)($percent * mb_strlen($text) / 100);
 
-        if ($this->isPercentLimited($percent)) {
+        if ($this->isPercentOnlyLimited($percent)) {
             $limited = $this->prepare(
                 $text,
                 $lengthFromPercent,
@@ -80,7 +80,7 @@ final class PercentLimiter implements Limiter
         return $percent === 100 && $this->maxLength === 0;
     }
 
-    private function isPercentLimited(int $percent): bool
+    private function isPercentOnlyLimited(int $percent): bool
     {
         return $percent !== 100 && $this->maxLength === 0;
     }
