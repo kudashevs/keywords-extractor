@@ -79,9 +79,9 @@ class KeywordsExtractorTest extends TestCase
     #[Test]
     public function it_can_extract_keywords(): void
     {
-        $keywords = $this->extractor->extract('this is a test');
+        $keywords = $this->extractor->extract('cool, this is a test');
 
-        $this->assertSame('test', $keywords);
+        $this->assertSame('cool, test', $keywords);
     }
 
     #[Test]
