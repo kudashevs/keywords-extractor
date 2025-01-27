@@ -50,7 +50,7 @@ class LengthLimiterTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('provideEndOfText')]
+    #[DataProvider('provideEndOfKeywords')]
     public function it_can_limit_a_text_and_consider_the_end_of_keywords(
         string $text,
         int $limit,
@@ -63,7 +63,7 @@ class LengthLimiterTest extends TestCase
         $this->assertSame($expected, $limited);
     }
 
-    public static function provideEndOfText(): array
+    public static function provideEndOfKeywords(): array
     {
         return [
             'space at the end' => [
