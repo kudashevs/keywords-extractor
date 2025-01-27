@@ -19,6 +19,8 @@ class KeywordsExtractor
 
     protected Extractor $extractor;
 
+    protected Limiter $limiter;
+
     protected array $options = [
         'length' => 0, // by default, the result is limitless
         'add' => [],
