@@ -16,7 +16,7 @@ trait Keywordable
         return rtrim($text, ', ');
     }
 
-    private function findLastPosition(string $text, string $char)
+    private function findLastPosition(string $text, string $char): int
     {
         $textLength = mb_strlen($text);
         $currentPosition = $textLength - 1;
