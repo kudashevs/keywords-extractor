@@ -4,6 +4,7 @@ namespace Kudashevs\KeywordsExtractor\Tests\Unit\Limiters;
 
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 use Kudashevs\KeywordsExtractor\Limiters\LengthLimiter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -46,6 +47,36 @@ class LengthLimiterTest extends TestCase
         $limited = $limiter->limit($text);
 
         $this->assertSame('new york', $limited);
+    }
+
+    #[Test]
+    #[DataProvider('provideEndOfText')]
+    public function it_can_limit_a_text_and_consider_the_end_of_text(
+        string $text,
+        int $limit,
+        string $expected,
+    ): void {
+        $limiter = new LengthLimiter($limit);
+
+        $limited = $limiter->limit($text);
+
+        $this->assertSame($expected, $limited);
+    }
+
+    public static function provideEndOfText(): array
+    {
+        return [
+            'space at the end' => [
+                'new york city ',
+                13,
+                'new york city',
+            ],
+            'comma at the end' => [
+                'new york city,',
+                13,
+                'new york city',
+            ],
+        ];
     }
 
     #[Test]

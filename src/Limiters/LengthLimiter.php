@@ -51,6 +51,10 @@ final class LengthLimiter implements Limiter
     {
         $cut = mb_substr($text, 0, $this->maxLength);
 
+        if ($this->isendoftext($text)) {
+            return $cut;
+        }
+
         $lastSpacePosition = $this->findLastPosition($cut, ' ');
 
         return mb_substr($cut, 0, $lastSpacePosition);

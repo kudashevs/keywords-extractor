@@ -6,6 +6,16 @@ namespace Kudashevs\KeywordsExtractor\Limiters;
 
 trait Limitable
 {
+    private function isEndOfText(string $text): bool
+    {
+        return preg_match('/(\s+|,)$/u', $text) === 1;
+    }
+
+    private function cleanUp(string $text): string
+    {
+        return rtrim($text, ', ');
+    }
+
     private function findLastPosition(string $text, string $char)
     {
         $textLength = mb_strlen($text);
@@ -20,10 +30,5 @@ trait Limitable
         }
 
         return $textLength;
-    }
-
-    private function cleanUp(string $text): string
-    {
-        return rtrim($text, ', ');
     }
 }
