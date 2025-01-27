@@ -48,6 +48,15 @@ $keywords = $extractor->addWords(['this', 'example'])
 print_r($keywords); // usage example, this
 ```
 
+### Result length
+
+By default, the returning result is limitless, meaning that the length of the result is not limited. However, in some
+cases the length of the result does matter. For these cases the package introduces the concept of a [Limiter](Limiters/Limiter.php).
+
+The library provides two possibilities to limit the result:
+- using the `limit_length` option (for more information please refer to [options](#options))
+- using a custom Limiter with a pre-defined max length (the library contains `LengthLimiter` and `PercentLimiter` classes)
+
 
 ## Options
 
