@@ -65,7 +65,7 @@ class KeywordsExtractorTest extends TestCase
         $this->expectException(InvalidOptionType::class);
         $this->expectExceptionMessage('limit_length');
 
-        new KeywordsExtractor(['limit_length' => 'any']);
+        new KeywordsExtractor(['limit_length' => 'wrong']);
     }
 
     #[Test]
