@@ -69,19 +69,18 @@ final class PercentLimiter implements Limiter
         $lengthFromPercent = (int)($percent * mb_strlen($text) / 100);
 
         if ($this->isLimitedByPercentOnly($percent)) {
-            $limitedText = $this->prepare(
-                $text,
-                $lengthFromPercent,
-            );
-
-            return $this->cleanUp($limitedText);
+            return $this->limitTextByLength($text, $lengthFromPercent);
         }
 
         $maxLength = $this->findMaxLimitLength($lengthFromPercent);
+        return $this->limitTextByLength($text, $maxLength);
+    }
 
+    private function limitTextByLength(string $text, int $length): string
+    {
         $limitedText = $this->prepare(
             $text,
-            $maxLength,
+            $length,
         );
 
         return $this->cleanUp($limitedText);
