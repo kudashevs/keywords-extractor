@@ -202,7 +202,7 @@ class KeywordsExtractor
      */
     public function extract(string $text): string
     {
-        $words = $this->extractor->extract($text);
+        $words = $this->extractor->extractWords($text);
 
         $keywords = implode(', ', $words);
 

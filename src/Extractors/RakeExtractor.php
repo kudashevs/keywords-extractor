@@ -20,7 +20,12 @@ final class RakeExtractor implements Extractor
 
     public function extract(string $text): array
     {
-        $keywords = $this->extractor->extract($text);
+        return $this->extractor->extract($text);
+    }
+
+    public function extractWords(string $text): array
+    {
+        $keywords = $this->extract($text);
 
         return array_keys($keywords);
     }
