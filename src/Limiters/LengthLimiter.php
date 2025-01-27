@@ -33,6 +33,9 @@ final class LengthLimiter implements Limiter
      */
     public function limit(string $text): string
     {
+        /*
+         * When the behavior is limitless, the input text does not need to be processed.
+         */
         if ($this->isLimitless()) {
             return $this->cleanUp($text);
         }
