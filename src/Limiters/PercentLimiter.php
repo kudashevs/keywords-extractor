@@ -46,15 +46,26 @@ final class PercentLimiter implements Limiter
 
     public function limit(string $text): string
     {
-        $percent = $this->retrievePercentForCalculation();
-
         /*
          * When the behavior is limitless, the input text does not need to be processed.
          */
-        if ($this->isLimitless($percent)) {
+        if ($this->isLimitless()) {
             return $this->cleanUp($text);
         }
 
+        return $this->limitText($text);
+    }
+
+    private function isLimitless(): bool
+    {
+        $percent = $this->retrievePercentForCalculation();
+
+        return $percent === 100 && $this->maxLength === 0;
+    }
+
+    private function limitText(string $text): string
+    {
+        $percent = $this->retrievePercentForCalculation();
         $lengthFromPercent = (int)($percent * mb_strlen($text) / 100);
 
         if ($this->isPercentOnlyLimited($percent)) {
@@ -73,11 +84,6 @@ final class PercentLimiter implements Limiter
         );
 
         return $this->cleanUp($limitedText);
-    }
-
-    private function isLimitless(int $percent): bool
-    {
-        return $percent === 100 && $this->maxLength === 0;
     }
 
     private function isPercentOnlyLimited(int $percent): bool
