@@ -40,9 +40,7 @@ final class LengthLimiter implements Limiter
             return $this->cleanUp($text);
         }
 
-        $limited = $this->prepare($text);
-
-        return $this->cleanUp($limited);
+        return $this->limitText($text);
     }
 
     private function isLimitless(): bool
@@ -50,8 +48,19 @@ final class LengthLimiter implements Limiter
         return $this->maxLength === 0;
     }
 
+    private function limitText(string $text): string
+    {
+        $limited = $this->prepare($text);
+
+        return $this->cleanUp($limited);
+    }
+
     private function prepare(string $text): string
     {
+        if (mb_strlen($text) <= $this->maxLength) {
+            return $text;
+        }
+
         $cut = mb_substr($text, 0, $this->maxLength);
 
         if ($this->isEndOfKeywords($text)) {
