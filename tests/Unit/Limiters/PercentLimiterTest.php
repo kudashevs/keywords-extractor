@@ -10,13 +10,6 @@ use PHPUnit\Framework\TestCase;
 
 class PercentLimiterTest extends TestCase
 {
-    private PercentLimiter $limiter;
-
-    protected function setUp(): void
-    {
-        $this->limiter = new PercentLimiter();
-    }
-
     #[Test]
     public function it_throws_an_exception_when_pecetn_is_less_or_equal_to_0(): void
     {
