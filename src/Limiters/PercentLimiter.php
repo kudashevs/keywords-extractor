@@ -78,6 +78,7 @@ final class PercentLimiter implements Limiter
         }
 
         $maxLength = $this->findMaxLimitLength($lengthFromPercent);
+
         $limitedText = $this->prepare(
             $text,
             $maxLength,
