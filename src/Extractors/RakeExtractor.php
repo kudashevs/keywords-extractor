@@ -24,11 +24,17 @@ final class RakeExtractor implements Extractor
         ]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function extract(string $text): array
     {
         return $this->extractor->extract($text);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function extractWords(string $text): array
     {
         $keywords = $this->extract($text);
@@ -44,6 +50,9 @@ final class RakeExtractor implements Extractor
         $this->extractor = $this->cloneAddWords($words);
     }
 
+    /**
+     * @param array<array-key, string> $words
+     */
     private function cloneAddWords(array $words): Rake
     {
         /*
@@ -70,6 +79,9 @@ final class RakeExtractor implements Extractor
         $this->extractor = $this->cloneRemoveWords($words);
     }
 
+    /**
+     * @param array<array-key, string> $words
+     */
     private function cloneRemoveWords(array $words): Rake
     {
         /*
