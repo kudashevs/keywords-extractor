@@ -46,19 +46,29 @@ final class PercentLimiter implements Limiter
 
     public function limit(string $text): string
     {
-        $maxLengthInPercent = $this->retrievePercentForCalculation();
-        $lengthFromPercent = (int)($maxLengthInPercent * mb_strlen($text) / 100);
+        $percent = $this->retrievePercentForCalculation();
+        $lengthFromPercent = (int)($percent * mb_strlen($text) / 100);
 
         /*
          * When the behavior is limitless, the input text does not need to be processed.
          */
-        if ($this->isLimitless($maxLengthInPercent)) {
+        if ($this->isLimitless($percent)) {
             return $this->cleanUp($text);
         }
 
+        if ($this->isPercentLimited($percent)) {
+            $limited = $this->prepare(
+                $text,
+                $lengthFromPercent,
+            );
+
+            return $this->cleanUp($limited);
+        }
+
+        $maxLength = $this->findMaxLimitLength($lengthFromPercent);
         $limited = $this->prepare(
             $text,
-            $this->findLimitedLength($maxLengthInPercent),
+            $maxLength,
         );
 
         return $this->cleanUp($limited);
@@ -69,6 +79,11 @@ final class PercentLimiter implements Limiter
         return $percent === 100 && $this->maxLength === 0;
     }
 
+    private function isPercentLimited(int $percent): bool
+    {
+        return $percent !== 100 && $this->maxLength === 0;
+    }
+
     private function retrievePercentForCalculation(): int
     {
         return (isset($this->percent) && $this->percent !== 0)
@@ -76,11 +91,11 @@ final class PercentLimiter implements Limiter
             : self::DEFAULT_PERCENT;
     }
 
-    private function findLimitedLength(int $candidate): int
+    private function findMaxLimitLength(int $candidate): int
     {
-        return ($this->maxLength > 0 && $this->maxLength > $candidate)
-            ? $this->maxLength
-            : $candidate;
+        return ($this->maxLength === 0 || $candidate < $this->maxLength)
+            ? $candidate
+            : $this->maxLength;
     }
 
     private function prepare(string $text, int $length): string

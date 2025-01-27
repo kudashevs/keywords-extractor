@@ -108,7 +108,23 @@ class PercentLimiterTest extends TestCase
     {
         $limiter = new PercentLimiter(100, 12);
 
-        $sequence = $this->generateSequence(10) . ', ' . $this->generateSequence(42);
+        $sequence = $this->generateSequence(10)
+            . ', ' . $this->generateSequence(2)
+            . ', ' . $this->generateSequence(10);
+
+        $limited = $limiter->limit($sequence);
+
+        $this->assertSame(10, strlen($limited));
+    }
+
+    #[Test]
+    public function it_can_use_external_limit_value_and_prefer_it_over_the_percent(): void
+    {
+        $limiter = new PercentLimiter(80, 12);
+
+        $sequence = $this->generateSequence(10)
+            . ', ' . $this->generateSequence(2)
+            . ', ' . $this->generateSequence(10);
 
         $limited = $limiter->limit($sequence);
 
