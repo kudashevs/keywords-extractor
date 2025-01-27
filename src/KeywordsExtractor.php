@@ -20,23 +20,23 @@ class KeywordsExtractor
     protected Extractor $extractor;
 
     protected array $options = [
+        'length' => 0, // by default, the result is limitless
         'add' => [],
         'remove' => [],
-        'length' => 0, // by default, the result is limitless
     ];
 
     /**
      * 'extractor'      Extractor An instance of an Extractor (@see Extractor::class).
-     * 'limiter'        Limiter An instance of a Limiter (@see Limiter::class).
      * 'add_words'      string|array A string or an array of words to add to the result (if they are ignored by an Extractor).
      * 'remove_words'   string|array A string or an array of words to remove from the result (if they are not ignored by an Extractor).
-     * 'limit_length'   int An integer defines the maximum length of the result.
+     * 'limiter'        Limiter An instance of a Limiter (@see Limiter::class).
+     * 'limit_length'   int An integer defines the maximum length of the result (is used only when a Limiter is not provided).
      *
      * @param array{
      *     extractor?: Extractor,
-     *     limiter?: Limiter,
      *     add_words?: string|array<array-key, string>,
      *     remove_words?: string|array<array-key, string>,
+     *     limiter?: Limiter,
      *     limit_length: int,
      * } $options
      *
