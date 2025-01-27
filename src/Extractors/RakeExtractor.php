@@ -18,9 +18,17 @@ final class RakeExtractor implements Extractor
      */
     public function __construct(array $options = [])
     {
+        $this->initExtractor($options);
+    }
+
+    private function initExtractor(array $options): void
+    {
+        $exclude = $options['add'] ?? [];
+        $include = $options['remove'] ?? [];
+
         $this->extractor = new Rake([
-            'exclude' => $options['add'] ?? [],
-            'include' => $options['remove'] ?? [],
+            'exclude' => $exclude,
+            'include' => $include,
         ]);
     }
 
