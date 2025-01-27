@@ -55,4 +55,17 @@ class KeywordsExtractorTest extends TestCase
 
         $this->assertSame('new york city, beautiful', $keywords);
     }
+
+    #[Test]
+    public function it_should_generate_keywords_with_a_limited_length(): void
+    {
+        $extractor = new KeywordsExtractor([
+            'add_words' => 'new',
+            'limit_length' => 16,
+        ]);
+
+        $keywords = $extractor->extract('New York City is a beautiful one');
+
+        $this->assertSame('new york city', $keywords);
+    }
 }
