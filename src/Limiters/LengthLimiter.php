@@ -8,7 +8,7 @@ use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 
 final class LengthLimiter implements Limiter
 {
-    use Limitable;
+    use Keywordable;
 
     const MAX_LIMIT_LENGTH = 255;
 

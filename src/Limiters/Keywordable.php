@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kudashevs\KeywordsExtractor\Limiters;
 
-trait Limitable
+trait Keywordable
 {
     private function isEndOfKeywords(string $text): bool
     {

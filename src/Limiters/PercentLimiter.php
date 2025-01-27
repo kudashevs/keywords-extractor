@@ -8,7 +8,7 @@ use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 
 final class PercentLimiter implements Limiter
 {
-    use Limitable;
+    use Keywordable;
 
     const DEFAULT_PERCENT = 10;
 
