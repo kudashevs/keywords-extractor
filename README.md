@@ -53,12 +53,15 @@ print_r($keywords); // usage example, this
 
 The `KeywordsExtractor` class accepts some configuration options:
 ```
+'extractor'                     # An Extractor instance that does all the extraction work.
 'add_words' => value            # A string or an array of words to add to the result (if they are ignored by an Extractor).
 'remove_words' => value         # A string or an array of words to remove from the result (if they are not ignored by an Extractor).
+'limiter'                       # A Limiter instance that limits the length of the end result.
+'limit_length'                  # An integer defines the maximum length of the result (is used only when a Limiter is not provided).
 ```
 
-**Note:** At the moment of instantiation, the `KeywordsExtractor` class may throw an `InvalidOptionType` exception. This
-exception extends a built-in `InvalidArgumentException` class, so it is easy to deal with.
+**Note:** At the moment of instantiation, the `KeywordsExtractor` class can throw a few exceptions: `InvalidOptionType`,
+`InvalidOptionType`. These exceptions extend a built-in `InvalidArgumentException` class, so they are easy to deal with.
 
 
 ## Testing
