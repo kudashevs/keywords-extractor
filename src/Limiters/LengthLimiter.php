@@ -50,17 +50,22 @@ final class LengthLimiter implements Limiter
 
     private function limitText(string $text): string
     {
+        if ($this->isBelowLimit($text)) {
+            return $this->cleanUp($text);
+        }
+
         $limited = $this->prepare($text);
 
         return $this->cleanUp($limited);
     }
 
+    private function isBelowLimit(string $text): bool
+    {
+        return mb_strlen($text) <= $this->maxLength;
+    }
+
     private function prepare(string $text): string
     {
-        if (mb_strlen($text) <= $this->maxLength) {
-            return $text;
-        }
-
         $cut = mb_substr($text, 0, $this->maxLength);
 
         if ($this->isEndOfKeywords($text)) {
