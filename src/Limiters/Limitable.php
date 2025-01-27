@@ -6,7 +6,7 @@ namespace Kudashevs\KeywordsExtractor\Limiters;
 
 trait Limitable
 {
-    private function isEndOfText(string $text): bool
+    private function isEndOfKeywords(string $text): bool
     {
         return preg_match('/(\s+|,)$/u', $text) === 1;
     }

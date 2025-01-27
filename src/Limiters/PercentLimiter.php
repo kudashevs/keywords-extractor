@@ -87,7 +87,7 @@ final class PercentLimiter implements Limiter
     {
         $cut = mb_substr($text, 0, $length);
 
-        if ($this->isEndOfText($cut)) {
+        if ($this->isEndOfKeywords($cut)) {
             return $cut;
         }
 

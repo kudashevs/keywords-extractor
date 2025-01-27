@@ -54,7 +54,7 @@ final class LengthLimiter implements Limiter
     {
         $cut = mb_substr($text, 0, $this->maxLength);
 
-        if ($this->isendoftext($text)) {
+        if ($this->isEndOfKeywords($text)) {
             return $cut;
         }
 

@@ -70,7 +70,7 @@ class PercentLimiterTest extends TestCase
 
     #[Test]
     #[DataProvider('provideEndOfText')]
-    public function it_can_limit_a_text_and_consider_the_end_of_text(
+    public function it_can_limit_a_text_and_consider_the_end_of_keywords(
         string $text,
         int $limit,
         string $expected,
