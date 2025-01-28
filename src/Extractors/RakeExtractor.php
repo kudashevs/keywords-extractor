@@ -23,13 +23,29 @@ final class RakeExtractor implements Extractor
 
     private function initExtractor(array $options): void
     {
-        $exclude = $options['add'] ?? [];
-        $include = $options['remove'] ?? [];
+        $exclude = array_merge($this->retrieveDefaultAddWords(), $options['add'] ?? []);
+        $include = array_merge($this->retrieveDefaultRemoveWords(), $options['remove'] ?? []);
 
         $this->extractor = new Rake([
             'exclude' => $exclude,
             'include' => $include,
         ]);
+    }
+
+    /**
+     * @return array<array-key, string>
+     */
+    private function retrieveDefaultAddWords(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<array-key, string>
+     */
+    private function retrieveDefaultRemoveWords(): array
+    {
+        return (new RakeExtractorStoplist())->getWords();
     }
 
     /**
