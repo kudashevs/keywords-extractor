@@ -21,6 +21,10 @@ final class RakeExtractor implements Extractor
         $this->initExtractor($options);
     }
 
+    /**
+     * @param array{add?: array<array-key, string>, remove?: array<array-key, string>} $options
+     * @return void
+     */
     private function initExtractor(array $options): void
     {
         $exclude = array_merge($this->retrieveDefaultAddWords(), $options['add'] ?? []);
