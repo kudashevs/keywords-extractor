@@ -71,28 +71,9 @@ final class RakeExtractor implements Extractor
      */
     public function addWords(array $words): void
     {
-        $this->extractor = $this->cloneAddWords($words);
-    }
-
-    /**
-     * @param array<array-key, string> $words
-     */
-    private function cloneAddWords(array $words): Rake
-    {
-        /*
-         * This implementation is very tightly coupled to the library's constructor.
-         * @todo don't forget to update it when the constructor's options change.
-         */
-        $newWithAddedWords = (function (array $words) {
-            return new Rake([
-                'modifiers' => $this->modifiers,
-                'sorter' => $this->sorter,
-                'include' => $this->options['include'],
-                'exclude' => array_merge($words, $this->options['exclude']),
-            ]);
-        })->call($this->extractor, $words);
-
-        return $newWithAddedWords;
+        $this->extractor = $this->cloneExtractor([
+            'exclude' => $words,
+        ]);
     }
 
     /**
@@ -100,27 +81,24 @@ final class RakeExtractor implements Extractor
      */
     public function removeWords(array $words): void
     {
-        $this->extractor = $this->cloneRemoveWords($words);
+        $this->extractor = $this->cloneExtractor([
+            'include' => $words,
+        ]);
     }
 
-    /**
-     * @param array<array-key, string> $words
-     */
-    private function cloneRemoveWords(array $words): Rake
+    private function cloneExtractor(array $arguments): Rake
     {
-        /*
-         * This implementation is very tightly coupled to the library's constructor.
-         * @todo don't forget to update it when the constructor's options change.
-         */
-        $newWithAddedWords = (function (array $words) {
+        return (function (array $arguments) {
+            /*
+             * This implementation is very tightly coupled to the library's constructor.
+             * @todo don't forget to update it when the constructor's options change.
+             */
             return new Rake([
                 'modifiers' => $this->modifiers,
                 'sorter' => $this->sorter,
-                'include' => array_merge($words, $this->options['include']),
-                'exclude' => $this->options['exclude'],
+                'include' => array_merge($arguments['include'] ?? [], $this->options['include']),
+                'exclude' => array_merge($arguments['exclude'] ?? [], $this->options['exclude']),
             ]);
-        })->call($this->extractor, $words);
-
-        return $newWithAddedWords;
+        })->call($this->extractor, $arguments);
     }
 }
