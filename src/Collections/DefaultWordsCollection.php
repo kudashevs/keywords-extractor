@@ -17,9 +17,19 @@ final class DefaultWordsCollection implements WordsCollection
 
     private array $lists;
 
-    public function __construct(array $wordsLists)
+    public function __construct(string $name, array $wordsLists)
     {
+        $this->initName($name);
         $this->initLists($wordsLists);
+    }
+
+    private function initName(string $name): void
+    {
+        if (trim($name) === '') {
+            throw new InvalidOptionValue('The collection name cannot be empty.');
+        }
+
+        $this->name = $name;
     }
 
     /**
@@ -48,6 +58,16 @@ final class DefaultWordsCollection implements WordsCollection
         $realPath = realpath(self::DEFAULT_WORDS_LISTS_PATH);
 
         return $realPath . DIRECTORY_SEPARATOR . $name . '.txt';
+    }
+
+    /**
+     * Get a unique collection name.
+     *
+     * @return array
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**
