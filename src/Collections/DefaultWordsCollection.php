@@ -40,22 +40,22 @@ final class DefaultWordsCollection implements WordsCollection
     private function initLists(array $lists): void
     {
         foreach ($lists as $list) {
-            if (!file_exists($this->generateListFilePath($list))) {
+            if (!file_exists($this->generateInitFilePath($list))) {
                 throw new InvalidOptionValue(
                     sprintf(
                         'There is no corresponding file %s for the list %s',
 
-                        $this->generateListFilePath($list),
+                        $this->generateInitFilePath($list),
                         $list,
                     )
                 );
             }
 
-            $this->lists[] = $this->generateListFilePath($list);
+            $this->lists[] = $this->generateInitFilePath($list);
         }
     }
 
-    private function generateListFilePath(string $name): string
+    private function generateInitFilePath(string $name): string
     {
         $realPath = realpath(self::DEFAULT_INIT_LISTS_PATH);
 
