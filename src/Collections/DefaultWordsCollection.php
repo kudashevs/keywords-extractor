@@ -11,6 +11,8 @@ use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
  */
 final class DefaultWordsCollection implements WordsCollection
 {
+    private const DEFAULT_INIT_LISTS_PATH = __DIR__ . '/../../assets/init';
+
     private const DEFAULT_WORDS_LISTS_PATH = __DIR__ . '/../../assets/words';
 
     private string $name;
@@ -55,7 +57,7 @@ final class DefaultWordsCollection implements WordsCollection
 
     private function generateListFilePath(string $name): string
     {
-        $realPath = realpath(self::DEFAULT_WORDS_LISTS_PATH);
+        $realPath = realpath(self::DEFAULT_INIT_LISTS_PATH);
 
         return $realPath . DIRECTORY_SEPARATOR . $name . '.txt';
     }
