@@ -39,22 +39,30 @@ final class DefaultWordsCollection implements WordsCollection
 
     /**
      * @param array<array-key, array> $lists
+     *
+     * @throws InvalidOptionValue
      */
     private function initLists(array $lists): void
     {
         foreach ($lists as $list) {
-            if (!file_exists($this->generateInitFilePath($list))) {
-                throw new InvalidOptionValue(
-                    sprintf(
-                        'There is no corresponding file %s for the list %s',
-
-                        $this->generateInitFilePath($list),
-                        $list,
-                    )
-                );
-            }
+            $this->validateList($list);
 
             $this->lists[] = $list;
+        }
+    }
+
+    private function validateList($list): void
+    {
+        $listFilePath = $this->generateInitFilePath($list);
+
+        if (!file_exists($listFilePath)) {
+            throw new InvalidOptionValue(
+                sprintf(
+                    'There is no corresponding file %s for the list %s.',
+                    $listFilePath,
+                    $list,
+                )
+            );
         }
     }
 
