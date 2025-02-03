@@ -66,25 +66,15 @@ final class DefaultWordsCollection implements WordsCollection
         }
     }
 
+    /**
+     * @param string $path A valid path with write permissions.
+     *
+     * @throws InvalidOptionValue
+     */
     private function initBuildPath(string $path)
     {
-        if (!file_exists($path) || !is_dir($path)) {
-            throw new InvalidOptionValue(
-                sprintf(
-                    'The path %s does not exist or is not a directory.',
-                    $path,
-                )
-            );
-        }
-
-        if (!is_writable($path)) {
-            throw new InvalidOptionValue(
-                sprintf(
-                    'The is not able to use the %s directory.',
-                    $path,
-                )
-            );
-        }
+        $this->validateExistingDirectory($path);
+        $this->validateWritableDirectory($path);
 
         $buildPath = $this->generateBuildPath($path);
 
@@ -100,6 +90,30 @@ final class DefaultWordsCollection implements WordsCollection
         }
 
         $this->buildPath = $buildPath;
+    }
+
+    private function validateExistingDirectory(string $path): void
+    {
+        if (!file_exists($path) || !is_dir($path)) {
+            throw new InvalidOptionValue(
+                sprintf(
+                    'The path %s does not exist or is not a directory.',
+                    $path,
+                )
+            );
+        }
+    }
+
+    private function validateWritableDirectory(string $path): void
+    {
+        if (!is_writable($path)) {
+            throw new InvalidOptionValue(
+                sprintf(
+                    'The path %s is now writable.',
+                    $path,
+                )
+            );
+        }
     }
 
     private function generateBuildPath(string $path): string
