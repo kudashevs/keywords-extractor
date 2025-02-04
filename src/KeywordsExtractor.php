@@ -32,8 +32,8 @@ class KeywordsExtractor
      */
     protected array $options = [
         'length' => 0, // by default, the result is limitless
-        'add' => [],
-        'remove' => [],
+        'add_words' => [],
+        'remove_words' => [],
     ];
 
     /**
@@ -82,7 +82,7 @@ class KeywordsExtractor
 
         $this->validateAddOption($options);
 
-        $this->options['add'] = (is_string($options['add_words']))
+        $this->options['add_words'] = (is_string($options['add_words']))
             ? [$options['add_words']]
             : $options['add_words'];
     }
@@ -108,7 +108,7 @@ class KeywordsExtractor
 
         $this->validateRemoveOption($options);
 
-        $this->options['remove'] = (is_string($options['remove_words']))
+        $this->options['remove_words'] = (is_string($options['remove_words']))
             ? [$options['remove_words']]
             : $options['remove_words'];
     }
