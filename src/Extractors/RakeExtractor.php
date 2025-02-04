@@ -10,6 +10,11 @@ final class RakeExtractor implements Extractor
 {
     private Rake $extractor;
 
+    private array $options = [
+        'default_exclusions' => true,
+        'default_inclusions' => true,
+    ];
+
     /**
      * @param array{
      *     add_words?: array<array-key, string>,
@@ -18,7 +23,20 @@ final class RakeExtractor implements Extractor
      */
     public function __construct(array $options = [])
     {
+        $this->initOptions($options);
         $this->initExtractor($options);
+    }
+
+    private function initOptions(array $options): void
+    {
+        $allowedOptions = $this->retrieveAllowedOptions($options);
+
+        $this->options = array_merge($this->options, $allowedOptions);
+    }
+
+    private function retrieveAllowedOptions(array $options): array
+    {
+        return array_intersect_key($options, $this->options);
     }
 
     /**
