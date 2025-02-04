@@ -168,8 +168,10 @@ final class DefaultWordsCollection implements WordsCollection
             return array_merge($acc, $words);
         }, []);
 
-        return array_filter($rawWords, function ($word) {
+        $filteredWords = array_filter($rawWords, function ($word) {
             return !str_starts_with($word, '#');
         });
+
+        return array_unique($filteredWords);
     }
 }
