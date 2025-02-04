@@ -12,8 +12,8 @@ final class RakeExtractor implements Extractor
 
     /**
      * @param array{
-     *     add?: array<array-key, string>,
-     *     remove?: array<array-key, string>,
+     *     add_words?: array<array-key, string>,
+     *     remove_words?: array<array-key, string>,
      *} $options
      */
     public function __construct(array $options = [])
@@ -22,13 +22,13 @@ final class RakeExtractor implements Extractor
     }
 
     /**
-     * @param array{add?: array<array-key, string>, remove?: array<array-key, string>} $options
+     * @param array{add_words?: array<array-key, string>, remove_words?: array<array-key, string>} $options
      * @return void
      */
     private function initExtractor(array $options): void
     {
-        $exclude = array_merge($this->retrieveDefaultAddWords(), $options['add'] ?? []);
-        $include = array_merge($this->retrieveDefaultRemoveWords(), $options['remove'] ?? []);
+        $exclude = array_merge($this->retrieveDefaultAddWords(), $options['add_words'] ?? []);
+        $include = array_merge($this->retrieveDefaultRemoveWords(), $options['remove_words'] ?? []);
 
         $this->extractor = new Rake([
             'exclude' => $exclude,
