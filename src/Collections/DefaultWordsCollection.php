@@ -75,7 +75,7 @@ final class DefaultWordsCollection implements WordsCollection
         }
     }
 
-    private function validateList($list): void
+    private function validateList(string $list): void
     {
         $listFilePath = $this->generateInitFilePath($list);
 
