@@ -34,7 +34,7 @@ final class LengthLimiter implements Limiter
      */
     private function initDelimiterOption(array $options): void
     {
-        if (isset($options['delimiter'])) {
+        if (isset($options['delimiter']) && is_string($options['delimiter'])) {
             if (mb_strlen($options['delimiter']) > 1) {
                 throw new InvalidOptionValue('The delimiter must be one character long.');
             }
@@ -48,7 +48,7 @@ final class LengthLimiter implements Limiter
      */
     private function initMaxLengthOption(array $options): void
     {
-        if (isset($options['max_length'])) {
+        if (isset($options['max_length']) && is_int($options['max_length'])) {
             if ($options['max_length'] < 0) {
                 throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
             }
