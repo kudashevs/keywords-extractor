@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Kudashevs\KeywordsExtractor\Extractors;
 
+use Kudashevs\KeywordsExtractor\Collections\CacheWordsCollection;
+use Kudashevs\KeywordsExtractor\Collections\WordsCollection;
 use Kudashevs\RakePhp\Rake;
 
 final class RakeExtractor implements Extractor
 {
+    /** @var class-string<WordsCollection> */
+    private const DEFAULT_COLLECTION_CLASS = CacheWordsCollection::class;
+
     private Rake $extractor;
 
     private array $options = [
@@ -45,8 +50,8 @@ final class RakeExtractor implements Extractor
      */
     private function initExtractor(array $options): void
     {
-        $exclude = array_merge($this->retrieveDefaultAddWords(), $options['add_words'] ?? []);
-        $include = array_merge($this->retrieveDefaultRemoveWords(), $options['remove_words'] ?? []);
+        $exclude = array_merge($this->getDefaultExclusions(), $options['add_words'] ?? []);
+        $include = array_merge($this->getDefaultInclusions(), $options['remove_words'] ?? []);
 
         $this->extractor = new Rake([
             'exclude' => $exclude,
@@ -57,17 +62,35 @@ final class RakeExtractor implements Extractor
     /**
      * @return array<array-key, string>
      */
-    private function retrieveDefaultAddWords(): array
+    private function getDefaultExclusions(): array
     {
+        if (isset($this->options['default_exclusions']) && $this->options['default_exclusions'] === true) {
+            $defaultAddWords = new (self::DEFAULT_COLLECTION_CLASS)(
+                'exclude_words',
+                ['rake_exclude'],
+            );
+
+            return $defaultAddWords->getWords();
+        }
+
         return [];
     }
 
     /**
      * @return array<array-key, string>
      */
-    private function retrieveDefaultRemoveWords(): array
+    private function getDefaultInclusions(): array
     {
-        return (new RakeExtractorStoplist())->getWords();
+        if (isset($this->options['default_inclusions']) && $this->options['default_inclusions'] === true) {
+            $defaultRemoveWords = new (self::DEFAULT_COLLECTION_CLASS)(
+                'include_words',
+                ['rake_include', 'adverbs', 'verbs'],
+            );
+
+            return $defaultRemoveWords->getWords();
+        }
+
+        return [];
     }
 
     /**
