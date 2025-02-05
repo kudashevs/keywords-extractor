@@ -25,9 +25,9 @@ final class CacheWordsCollection implements WordsCollection
         $this->initBuildPath($path);
     }
 
-    private function initCollection(string $name, array $wordsLists): void
+    private function initCollection(string $name, array $wordsLists, string $path): void
     {
-        $this->collection = new (self::DEFAULT_COLLECTION_CLASS)($name, $wordsLists);
+        $this->collection = new (self::DEFAULT_COLLECTION_CLASS)($name, $wordsLists, $path);
     }
 
     /**
