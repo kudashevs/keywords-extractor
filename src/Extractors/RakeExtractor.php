@@ -6,6 +6,7 @@ namespace Kudashevs\KeywordsExtractor\Extractors;
 
 use Kudashevs\KeywordsExtractor\Collections\CacheWordsCollection;
 use Kudashevs\KeywordsExtractor\Collections\WordsCollection;
+use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 use Kudashevs\RakePhp\Rake;
 
 final class RakeExtractor implements Extractor
@@ -16,6 +17,7 @@ final class RakeExtractor implements Extractor
     private Rake $extractor;
 
     private array $options = [
+        'assets_path' => __DIR__ . '/../../assets/',
         'default_exclusions' => true,
         'default_inclusions' => true,
     ];
@@ -24,7 +26,12 @@ final class RakeExtractor implements Extractor
      * @param array{
      *     add_words?: array<array-key, string>,
      *     remove_words?: array<array-key, string>,
+     *     assets_path?: string,
+     *     default_exclusions?: bool,
+     *     default_inclusions?: bool,
      *} $options
+     *
+     * @throws InvalidOptionValue
      */
     public function __construct(array $options = [])
     {
@@ -68,6 +75,7 @@ final class RakeExtractor implements Extractor
             $defaultAddWords = new (self::DEFAULT_COLLECTION_CLASS)(
                 'exclude_words',
                 ['rake_exclude'],
+                $this->options['assets_path'],
             );
 
             return $defaultAddWords->getWords();
@@ -85,6 +93,7 @@ final class RakeExtractor implements Extractor
             $defaultRemoveWords = new (self::DEFAULT_COLLECTION_CLASS)(
                 'include_words',
                 ['rake_include', 'adverbs', 'verbs'],
+                $this->options['assets_path'],
             );
 
             return $defaultRemoveWords->getWords();

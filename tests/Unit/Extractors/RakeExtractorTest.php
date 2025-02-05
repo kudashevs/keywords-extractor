@@ -2,6 +2,7 @@
 
 namespace Kudashevs\KeywordsExtractor\Tests\Unit\Extractors;
 
+use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 use Kudashevs\KeywordsExtractor\Extractors\RakeExtractor;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -13,6 +14,15 @@ class RakeExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->extractor = new RakeExtractor();
+    }
+
+    #[Test]
+    public function it_throws_an_exception_when_a_wrong_assets_path(): void
+    {
+        $this->expectException(InvalidOptionValue::class);
+        $this->expectExceptionMessage('path');
+
+        new RakeExtractor(['assets_path' => 'wrong']);
     }
 
     #[Test]
