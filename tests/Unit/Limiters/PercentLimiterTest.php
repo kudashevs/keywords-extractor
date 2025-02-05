@@ -16,7 +16,7 @@ class PercentLimiterTest extends TestCase
         $this->expectException(InvalidOptionValue::class);
         $this->expectExceptionMessage('max length');
 
-        new PercentLimiter(0);
+        new PercentLimiter(['percent' => 0]);
     }
 
     #[Test]
@@ -25,7 +25,7 @@ class PercentLimiterTest extends TestCase
         $this->expectException(InvalidOptionValue::class);
         $this->expectExceptionMessage('max length');
 
-        new PercentLimiter(101);
+        new PercentLimiter(['percent' => 101]);
     }
 
     #[Test]
@@ -34,14 +34,14 @@ class PercentLimiterTest extends TestCase
         $this->expectException(InvalidOptionValue::class);
         $this->expectExceptionMessage('max length');
 
-        new PercentLimiter(-1);
+        new PercentLimiter(['max_length' => -1]);
     }
 
     #[Test]
     public function it_can_limit_a_text_without_spaces(): void
     {
         $expected = 64;
-        $limiter = new PercentLimiter(100, $expected);
+        $limiter = new PercentLimiter(['percent' => 100, 'max_length' => $expected]);
 
         $sequence = $this->generateSequence($expected) . ', ' . $this->generateSequence(42);
 
@@ -53,7 +53,7 @@ class PercentLimiterTest extends TestCase
     #[Test]
     public function it_can_limit_a_text(): void
     {
-        $limiter = new PercentLimiter(80);
+        $limiter = new PercentLimiter(['percent' => 80]);
         $text = 'new york city, beautiful';
 
         $limited = $limiter->limit($text);
@@ -68,7 +68,7 @@ class PercentLimiterTest extends TestCase
         int $limit,
         string $expected,
     ): void {
-        $limiter = new PercentLimiter($limit);
+        $limiter = new PercentLimiter(['percent' => $limit]);
 
         $limited = $limiter->limit($text);
 
@@ -94,7 +94,7 @@ class PercentLimiterTest extends TestCase
     #[Test]
     public function it_can_use_external_percent_value(): void
     {
-        $limiter = new PercentLimiter(50);
+        $limiter = new PercentLimiter(['percent' => 50]);
 
         $sequence = $this->generateSequence(10) . ', ' . $this->generateSequence(10);
 
@@ -106,7 +106,7 @@ class PercentLimiterTest extends TestCase
     #[Test]
     public function it_can_use_external_limit_value(): void
     {
-        $limiter = new PercentLimiter(100, 12);
+        $limiter = new PercentLimiter(['percent' => 100, 'max_length' => 12]);
 
         $sequence = $this->generateSequence(10)
             . ', ' . $this->generateSequence(2)
@@ -120,7 +120,7 @@ class PercentLimiterTest extends TestCase
     #[Test]
     public function it_can_use_external_limit_value_and_prefer_it_over_the_percent(): void
     {
-        $limiter = new PercentLimiter(80, 12);
+        $limiter = new PercentLimiter(['percent' => 80, 'max_length' => 12]);
 
         $sequence = $this->generateSequence(10)
             . ', ' . $this->generateSequence(2)
@@ -134,7 +134,7 @@ class PercentLimiterTest extends TestCase
     #[Test]
     public function it_can_use_external_percent_value_and_be_limitless(): void
     {
-        $limiter = new PercentLimiter(100);
+        $limiter = new PercentLimiter(['percent' => 100]);
 
         $sequence = $this->generateSequence(10) . ', ' . $this->generateSequence(10);
 

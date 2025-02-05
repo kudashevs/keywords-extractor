@@ -12,36 +12,70 @@ final class PercentLimiter implements Limiter
 
     const DEFAULT_PERCENT = 10;
 
-    private int $percent;
+    private array $options = [
+        'delimiter' => ' ',
+        'percent' => self::DEFAULT_PERCENT,
+        'max_length' => 0,
+    ];
 
-    private int $maxLength;
-
-    public function __construct(int $percent = self::DEFAULT_PERCENT, int $maxLength = 0)
+    /**
+     * @param array{
+     *     delimiter?: string,
+     *     percent?: int,
+     *     max_length?: int,
+     * } $options
+     */
+    public function __construct(array $options = [])
     {
-        $this->initPercent($percent);
-        $this->initMaxLength($maxLength);
+        $this->initDelimiterOption($options);
+        $this->initPercentOption($options);
+        $this->initMaxLengthOption($options);
     }
 
-    private function initPercent(int $maxPercent): void
+    /**
+     * @param array{delimiter?: string} $options
+     */
+    private function initDelimiterOption(array $options): void
     {
-        if ($maxPercent <= 0) {
-            throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
-        }
+        if (isset($options['delimiter']) && is_string($options['delimiter'])) {
+            if (mb_strlen($options['delimiter']) > 1) {
+                throw new InvalidOptionValue('The delimiter must be one character long.');
+            }
 
-        if ($maxPercent > 100) {
-            throw new InvalidOptionValue('The max length value must be less or equal to 100.');
+            $this->options['delimiter'] = $options['delimiter'];
         }
-
-        $this->percent = $maxPercent;
     }
 
-    private function initMaxLength(int $maxLength): void
+    /**
+     * @param array{percent?: int} $options
+     */
+    private function initPercentOption(array $options): void
     {
-        if ($maxLength < 0) {
-            throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
-        }
+        if (isset($options['percent']) && is_int($options['percent'])) {
+            if ($options['percent'] <= 0) {
+                throw new InvalidOptionValue('The max length value must be greater than 0.');
+            }
 
-        $this->maxLength = $maxLength;
+            if ($options['percent'] > 100) {
+                throw new InvalidOptionValue('The max length value must be less or equal to 100.');
+            }
+
+            $this->options['percent'] = $options['percent'];
+        }
+    }
+
+    /**
+     * @param array{max_length?: int} $options
+     */
+    private function initMaxLengthOption(array $options): void
+    {
+        if (isset($options['max_length']) && is_int($options['max_length'])) {
+            if ($options['max_length'] < 0) {
+                throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
+            }
+
+            $this->options['max_length'] = $options['max_length'];
+        }
     }
 
     public function limit(string $text): string
@@ -60,7 +94,7 @@ final class PercentLimiter implements Limiter
     {
         $percent = $this->retrievePercentForCalculation();
 
-        return $percent === 100 && $this->maxLength === 0;
+        return $percent === 100 && $this->options['max_length'] === 0;
     }
 
     private function limitText(string $text): string
@@ -88,21 +122,21 @@ final class PercentLimiter implements Limiter
 
     private function isLimitedByPercentOnly(int $percent): bool
     {
-        return $percent !== 100 && $this->maxLength === 0;
+        return $percent !== 100 && $this->options['max_length'] === 0;
     }
 
     private function retrievePercentForCalculation(): int
     {
-        return (isset($this->percent) && $this->percent !== 0)
-            ? $this->percent
+        return (isset($this->options['percent']) && $this->options['percent'] !== 0)
+            ? $this->options['percent']
             : self::DEFAULT_PERCENT;
     }
 
     private function findMaxLimitLength(int $candidate): int
     {
-        return ($this->maxLength === 0 || $candidate < $this->maxLength)
+        return ($this->options['max_length'] === 0 || $candidate < $this->options['max_length'])
             ? $candidate
-            : $this->maxLength;
+            : $this->options['max_length'];
     }
 
     private function prepare(string $text, int $length): string
