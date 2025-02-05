@@ -3,6 +3,7 @@
 namespace Kudashevs\KeywordsExtractor\Tests\Unit;
 
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionType;
+use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 use Kudashevs\KeywordsExtractor\Extractors\Extractor;
 use Kudashevs\KeywordsExtractor\KeywordsExtractor;
 use Kudashevs\KeywordsExtractor\Limiters\Limiter;
@@ -17,6 +18,15 @@ class KeywordsExtractorTest extends TestCase
     protected function setUp(): void
     {
         $this->extractor = new KeywordsExtractor();
+    }
+
+    #[Test]
+    public function it_throws_an_exception_when_a_wrong_assets_path(): void
+    {
+        $this->expectException(InvalidOptionValue::class);
+        $this->expectExceptionMessage('path');
+
+        new KeywordsExtractor(['assets_path' => 'wrong']);
     }
 
     #[Test]

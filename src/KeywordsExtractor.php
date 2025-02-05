@@ -6,6 +6,7 @@ namespace Kudashevs\KeywordsExtractor;
 
 use InvalidArgumentException;
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionType;
+use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 use Kudashevs\KeywordsExtractor\Extractors\Extractor;
 use Kudashevs\KeywordsExtractor\Extractors\RakeExtractor;
 use Kudashevs\KeywordsExtractor\Limiters\LengthLimiter;
@@ -34,12 +35,14 @@ class KeywordsExtractor
      */
     protected array $options = [
         'length' => 0, // by default, the result is limitless
+        'assets_path' => __DIR__ . '/../assets/',
         'add_words' => [],
         'remove_words' => [],
     ];
 
     /**
      * 'extractor'      Extractor An instance of an Extractor (@see Extractor::class).
+     * 'assets_path'    string A string with valid path with write permissions to keep assets.
      * 'add_words'      string|array A string or an array of words to add to the result (if they are ignored by an Extractor).
      * 'remove_words'   string|array A string or an array of words to remove from the result (if they are not ignored by an Extractor).
      * 'limiter'        Limiter An instance of a Limiter (@see Limiter::class).
@@ -47,6 +50,7 @@ class KeywordsExtractor
      *
      * @param array{
      *     extractor?: Extractor,
+     *     assets_path?: string,
      *     add_words?: string|array<array-key, string>,
      *     remove_words?: string|array<array-key, string>,
      *     limiter?: Limiter,
@@ -68,9 +72,42 @@ class KeywordsExtractor
      */
     protected function initOptions(array $options): void
     {
+        $this->initAssetsPath($options);
         $this->initAddOption($options);
         $this->initRemoveOption($options);
         $this->initLengthOption($options);
+    }
+
+    protected function initAssetsPath(array $options): void
+    {
+        if (!isset($options['assets_path']) || !is_string($options['assets_path'])) {
+            return;
+        }
+
+        $this->validateAssetsPath($options['assets_path']);
+
+        $this->options['assets_path'] = $options['assets_path'];
+    }
+
+    protected function validateAssetsPath(string $path): void
+    {
+        if (!file_exists($path) || !is_dir($path)) {
+            throw new InvalidOptionValue(
+                sprintf(
+                    'The path %s does not exist or is not a directory.',
+                    $path,
+                )
+            );
+        }
+
+        if (!is_writable($path)) {
+            throw new InvalidOptionValue(
+                sprintf(
+                    'The path %s is not writable.',
+                    $path,
+                )
+            );
+        }
     }
 
     /**
