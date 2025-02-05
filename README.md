@@ -62,7 +62,7 @@ The library provides two possibilities to limit the result:
 
 The `KeywordsExtractor` class accepts some configuration options:
 ```
-'extractor'                     # An Extractor instance that does all the extraction work.
+'extractor'                     # An Extractor instance that does all of the extraction work.
 'add_words' => value            # A string or an array of words to add to the result (if they are ignored by an Extractor).
 'remove_words' => value         # A string or an array of words to remove from the result (if they are not ignored by an Extractor).
 'limiter'                       # A Limiter instance that limits the length of the end result.
