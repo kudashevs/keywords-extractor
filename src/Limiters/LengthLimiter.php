@@ -12,20 +12,57 @@ final class LengthLimiter implements Limiter
 
     const MAX_LIMIT_LENGTH = 255;
 
-    private int $maxLength;
+    private array $options = [
+        'delimiter' => ' ',
+        'max_length' => self::MAX_LIMIT_LENGTH,
+    ];
 
-    public function __construct(int $maxLength = self::MAX_LIMIT_LENGTH)
+    /**
+     * @param array{
+     *     delimiter?: string,
+     *     max_length?: int,
+     * } $options
+     */
+    public function __construct(array $options = [])
     {
-        $this->initMaxLength($maxLength);
+        $this->initOptions($options);
     }
 
-    private function initMaxLength(int $maxLength): void
+    /**
+     * @param array{delimiter?: string, max_length?: int} $options
+     */
+    private function initOptions(array $options): void
     {
-        if ($maxLength < 0) {
-            throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
-        }
+        $this->initDelimiterOption($options);
+        $this->initMaxLengthOption($options);
+    }
 
-        $this->maxLength = $maxLength;
+    /**
+     * @param array{delimiter?: string} $options
+     */
+    private function initDelimiterOption(array $options): void
+    {
+        if (isset($options['delimiter'])) {
+            if (mb_strlen($options['delimiter']) > 1) {
+                throw new InvalidOptionValue('The delimiter must be one character long.');
+            }
+
+            $this->options['delimiter'] = $options['delimiter'];
+        }
+    }
+
+    /**
+     * @param array{max_length?: int} $options
+     */
+    private function initMaxLengthOption(array $options): void
+    {
+        if (isset($options['max_length'])) {
+            if ($options['max_length'] < 0) {
+                throw new InvalidOptionValue('The max length value must be greater or equal to 0.');
+            }
+
+            $this->options['max_length'] = $options['max_length'];
+        }
     }
 
     /**
@@ -45,7 +82,7 @@ final class LengthLimiter implements Limiter
 
     private function isLimitless(): bool
     {
-        return $this->maxLength === 0;
+        return $this->options['max_length'] === 0;
     }
 
     private function limitText(string $text): string
@@ -61,12 +98,12 @@ final class LengthLimiter implements Limiter
 
     private function isBelowLimit(string $text): bool
     {
-        return mb_strlen($text) <= $this->maxLength;
+        return mb_strlen($text) <= $this->options['max_length'];
     }
 
     private function prepare(string $text): string
     {
-        $cut = mb_substr($text, 0, $this->maxLength);
+        $cut = mb_substr($text, 0, $this->options['max_length']);
 
         if ($this->isEndOfKeywords($text)) {
             return $cut;

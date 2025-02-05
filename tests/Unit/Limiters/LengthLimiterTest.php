@@ -23,7 +23,7 @@ class LengthLimiterTest extends TestCase
         $this->expectException(InvalidOptionValue::class);
         $this->expectExceptionMessage('max length');
 
-        new LengthLimiter(-1);
+        new LengthLimiter(['max_length' => -1]);
     }
 
     #[Test]
@@ -41,7 +41,7 @@ class LengthLimiterTest extends TestCase
     #[Test]
     public function it_can_limit_a_text(): void
     {
-        $limiter = new LengthLimiter(10);
+        $limiter = new LengthLimiter(['max_length' => 10]);
         $text = 'new york city, beautiful';
 
         $limited = $limiter->limit($text);
@@ -56,7 +56,7 @@ class LengthLimiterTest extends TestCase
         int $limit,
         string $expected,
     ): void {
-        $limiter = new LengthLimiter($limit);
+        $limiter = new LengthLimiter(['max_length' => $limit]);
 
         $limited = $limiter->limit($text);
 
@@ -82,7 +82,7 @@ class LengthLimiterTest extends TestCase
     #[Test]
     public function it_can_use_external_limit_value(): void
     {
-        $limiter = new LengthLimiter(10);
+        $limiter = new LengthLimiter(['max_length' => 10]);
 
         $sequence = $this->generateSequence(10) . ', ' . $this->generateSequence(42);
 
@@ -94,7 +94,7 @@ class LengthLimiterTest extends TestCase
     #[Test]
     public function it_can_use_external_limit_value_and_be_limitless(): void
     {
-        $limiter = new LengthLimiter(0);
+        $limiter = new LengthLimiter(['max_length' => 0]);
         $default = LengthLimiter::MAX_LIMIT_LENGTH - 1;
 
         $sequence = $this->generateSequence($default) . ', ' . $this->generateSequence(42);
@@ -107,7 +107,7 @@ class LengthLimiterTest extends TestCase
     #[Test]
     public function it_can_use_external_limit_value_and_limit_to_some_extent(): void
     {
-        $limiter = new LengthLimiter(16);
+        $limiter = new LengthLimiter(['max_length' => 16]);
         $text = 'new york city, beautiful';
 
         $limited = $limiter->limit($text);
