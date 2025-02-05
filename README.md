@@ -70,7 +70,7 @@ The `KeywordsExtractor` class accepts some configuration options:
 ```
 
 **Note:** At the moment of instantiation, the `KeywordsExtractor` class can throw a few exceptions: `InvalidOptionType`,
-`InvalidOptionType`. These exceptions extend a built-in `InvalidArgumentException` class, so they are easy to deal with.
+`InvalidOptionValue`. These exceptions extend a built-in `InvalidArgumentException` class, so they are easy to deal with.
 
 
 ## Testing
