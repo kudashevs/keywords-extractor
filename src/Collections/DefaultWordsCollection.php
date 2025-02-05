@@ -100,7 +100,7 @@ final class DefaultWordsCollection implements WordsCollection
         if (!is_writable($path)) {
             throw new InvalidOptionValue(
                 sprintf(
-                    'The path %s is now writable.',
+                    'The path %s is not writable.',
                     $path,
                 )
             );
