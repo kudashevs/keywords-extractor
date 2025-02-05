@@ -61,10 +61,15 @@ class DefaultWordsCollectionTest extends CollectionTestCase
         $buildDirectory = __DIR__ . '/../../temp';
         $wordsDirectory = $buildDirectory . '/words';
         $expectedFile = $wordsDirectory . DIRECTORY_SEPARATOR . 'adverbs.txt';
+        /*
+         * As long as this functionality is tested only once, the tearDown() doesn't make sense yet.
+         */
+        $this->deleteFileWithAssertion($expectedFile);
+        $this->deleteDirectory($wordsDirectory);
+        $this->assertFileDoesNotExist($expectedFile);
 
         $collection = new DefaultWordsCollection('remove_words', ['adverbs'], $buildDirectory);
 
-        $this->assertFileDoesNotExist($expectedFile);
         $words = $collection->getWords();
         $this->assertFileExists($expectedFile);
 

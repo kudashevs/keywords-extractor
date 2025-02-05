@@ -24,8 +24,8 @@ final class DefaultWordsCollection implements WordsCollection
     public function __construct(string $name, array $wordsLists, string $path = __DIR__ . '/../../assets/')
     {
         $this->initName($name);
-        $this->initLists($wordsLists);
         $this->initBuildPath($path);
+        $this->initLists($wordsLists);
     }
 
     private function initName(string $name): void
@@ -38,6 +38,23 @@ final class DefaultWordsCollection implements WordsCollection
     }
 
     /**
+     * @param string $path A valid path with write permissions.
+     *
+     * @throws InvalidOptionValue
+     */
+    private function initBuildPath(string $path): void
+    {
+        $this->validateExistingDirectory($path);
+        $this->validateWritableDirectory($path);
+
+        $buildPath = $this->generateBuildPath($path);
+
+        $this->makeDirectory($buildPath);
+
+        $this->buildPath = $buildPath;
+    }
+
+    /**
      * @param array<array-key, array> $lists
      *
      * @throws InvalidOptionValue
@@ -46,6 +63,13 @@ final class DefaultWordsCollection implements WordsCollection
     {
         foreach ($lists as $list) {
             $this->validateList($list);
+
+            $initFile = $this->generateInitFilePath($list);
+            $listFile = $this->generateBuildFilePath($list);
+
+            if (!file_exists($listFile)) {
+                copy($initFile, $listFile);
+            }
 
             $this->lists[] = $list;
         }
@@ -64,23 +88,6 @@ final class DefaultWordsCollection implements WordsCollection
                 )
             );
         }
-    }
-
-    /**
-     * @param string $path A valid path with write permissions.
-     *
-     * @throws InvalidOptionValue
-     */
-    private function initBuildPath(string $path)
-    {
-        $this->validateExistingDirectory($path);
-        $this->validateWritableDirectory($path);
-
-        $buildPath = $this->generateBuildPath($path);
-
-        $this->makeDirectory($buildPath);
-
-        $this->buildPath = $buildPath;
     }
 
     private function validateExistingDirectory(string $path): void
@@ -128,11 +135,14 @@ final class DefaultWordsCollection implements WordsCollection
         return $realPath . DIRECTORY_SEPARATOR . self::WORDS_LISTS_DIRECTORY;
     }
 
+    private function generateInitPath(): string
+    {
+        return realpath(self::DEFAULT_INIT_LISTS_PATH);
+    }
+
     private function generateInitFilePath(string $name): string
     {
-        $realPath = realpath(self::DEFAULT_INIT_LISTS_PATH);
-
-        return $realPath . DIRECTORY_SEPARATOR . $name . '.txt';
+        return $this->generateInitPath() . DIRECTORY_SEPARATOR . $name . '.txt';
     }
 
     private function generateBuildFilePath(string $name): string
@@ -154,12 +164,7 @@ final class DefaultWordsCollection implements WordsCollection
     public function getWords(): array
     {
         $rawWords = array_reduce($this->lists, function ($acc, $list) {
-            $initFile = $this->generateInitFilePath($list);
             $wordsFile = $this->generateBuildFilePath($list);
-
-            if (!file_exists($wordsFile)) {
-                copy($initFile, $wordsFile);
-            }
 
             $words = @file($wordsFile, FILE_IGNORE_NEW_LINES) ?: [];
 
