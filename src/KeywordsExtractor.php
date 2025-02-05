@@ -19,6 +19,8 @@ class KeywordsExtractor
     /** @var class-string<Limiter> */
     protected const DEFAULT_LIMITER = LengthLimiter::class;
 
+    protected const DEFAULT_SEPARATOR = ',';
+
     protected Extractor $extractor;
 
     protected Limiter $limiter;
@@ -176,7 +178,10 @@ class KeywordsExtractor
             return;
         }
 
-        $this->limiter = new (static::DEFAULT_LIMITER)($this->options['length']);
+        $this->limiter = new (static::DEFAULT_LIMITER)([
+            'separator' => self::DEFAULT_SEPARATOR,
+            'max_length' => $this->options['length'],
+        ]);
     }
 
     /**
@@ -225,7 +230,7 @@ class KeywordsExtractor
     {
         $words = $this->extractor->extractWords($text);
 
-        $keywords = implode(', ', $words);
+        $keywords = implode(self::DEFAULT_SEPARATOR . ' ', $words);
 
         return $this->limiter->limit($keywords);
     }
