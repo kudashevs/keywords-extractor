@@ -25,14 +25,6 @@ final class LengthLimiter implements Limiter
      */
     public function __construct(array $options = [])
     {
-        $this->initOptions($options);
-    }
-
-    /**
-     * @param array{delimiter?: string, max_length?: int} $options
-     */
-    private function initOptions(array $options): void
-    {
         $this->initDelimiterOption($options);
         $this->initMaxLengthOption($options);
     }
