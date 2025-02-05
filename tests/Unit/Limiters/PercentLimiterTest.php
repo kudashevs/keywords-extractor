@@ -143,6 +143,28 @@ class PercentLimiterTest extends TestCase
         $this->assertEquals(22, strlen($limited));
     }
 
+    #[Test]
+    public function it_can_use_external_limit_value_and_limit_to_some_extent_with_default_separator(): void
+    {
+        $limiter = new PercentLimiter(['percent' => 100, 'max_length' => 28]);
+        $text = 'new york city, beautiful city';
+
+        $limited = $limiter->limit($text);
+
+        $this->assertSame('new york city, beautiful', $limited);
+    }
+
+    #[Test]
+    public function it_can_use_external_limit_value_and_limit_to_some_extent_with_provided_separator(): void
+    {
+        $limiter = new PercentLimiter(['percent' => 100, 'separator' => ',', 'max_length' => 28]);
+        $text = 'new york city, beautiful city';
+
+        $limited = $limiter->limit($text);
+
+        $this->assertSame('new york city', $limited);
+    }
+
     private function generateSequence(int $length): string
     {
         return str_repeat('A', $length);
