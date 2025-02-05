@@ -93,9 +93,7 @@ final class CacheWordsCollection implements WordsCollection
     }
 
     /**
-     * Get a unique collection name.
-     *
-     * @return array
+     * @inheritDoc
      */
     public function getName(): string
     {
@@ -103,7 +101,7 @@ final class CacheWordsCollection implements WordsCollection
     }
 
     /**
-     * @return array<array-key, string>
+     * @inheritDoc
      */
     public function getWords(): array
     {
