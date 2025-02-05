@@ -101,7 +101,7 @@ final class LengthLimiter implements Limiter
             return $cut;
         }
 
-        $lastSpacePosition = $this->findLastPosition($cut, ' ');
+        $lastSpacePosition = $this->findLastPosition($cut, $this->options['separator']);
 
         return mb_substr($cut, 0, $lastSpacePosition);
     }

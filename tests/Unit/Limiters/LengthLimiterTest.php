@@ -105,10 +105,21 @@ class LengthLimiterTest extends TestCase
     }
 
     #[Test]
-    public function it_can_use_external_limit_value_and_limit_to_some_extent(): void
+    public function it_can_use_external_limit_value_and_limit_to_some_extent_with_default_separator(): void
     {
-        $limiter = new LengthLimiter(['max_length' => 16]);
-        $text = 'new york city, beautiful';
+        $limiter = new LengthLimiter(['max_length' => 28]);
+        $text = 'new york city, beautiful city';
+
+        $limited = $limiter->limit($text);
+
+        $this->assertSame('new york city, beautiful', $limited);
+    }
+
+    #[Test]
+    public function it_can_use_external_limit_value_and_limit_to_some_extent_with_provided_separator(): void
+    {
+        $limiter = new LengthLimiter(['separator' => ',', 'max_length' => 28]);
+        $text = 'new york city, beautiful city';
 
         $limited = $limiter->limit($text);
 
