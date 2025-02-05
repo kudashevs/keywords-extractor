@@ -13,14 +13,14 @@ final class PercentLimiter implements Limiter
     const DEFAULT_PERCENT = 10;
 
     private array $options = [
-        'delimiter' => ' ',
+        'separator' => ' ',
         'percent' => self::DEFAULT_PERCENT,
         'max_length' => 0,
     ];
 
     /**
      * @param array{
-     *     delimiter?: string,
+     *     separator?: string,
      *     percent?: int,
      *     max_length?: int,
      * } $options
@@ -33,16 +33,16 @@ final class PercentLimiter implements Limiter
     }
 
     /**
-     * @param array{delimiter?: string} $options
+     * @param array{separator?: string} $options
      */
     private function initDelimiterOption(array $options): void
     {
-        if (isset($options['delimiter']) && is_string($options['delimiter'])) {
-            if (mb_strlen($options['delimiter']) > 1) {
-                throw new InvalidOptionValue('The delimiter must be one character long.');
+        if (isset($options['separator']) && is_string($options['separator'])) {
+            if (mb_strlen($options['separator']) > 1) {
+                throw new InvalidOptionValue('The separator must be one character long.');
             }
 
-            $this->options['delimiter'] = $options['delimiter'];
+            $this->options['separator'] = $options['separator'];
         }
     }
 
