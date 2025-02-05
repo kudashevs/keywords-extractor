@@ -13,13 +13,13 @@ final class LengthLimiter implements Limiter
     const MAX_LIMIT_LENGTH = 255;
 
     private array $options = [
-        'delimiter' => ' ',
+        'separator' => ' ',
         'max_length' => self::MAX_LIMIT_LENGTH,
     ];
 
     /**
      * @param array{
-     *     delimiter?: string,
+     *     separator?: string,
      *     max_length?: int,
      * } $options
      */
@@ -30,16 +30,16 @@ final class LengthLimiter implements Limiter
     }
 
     /**
-     * @param array{delimiter?: string} $options
+     * @param array{separator?: string} $options
      */
     private function initDelimiterOption(array $options): void
     {
-        if (isset($options['delimiter']) && is_string($options['delimiter'])) {
-            if (mb_strlen($options['delimiter']) > 1) {
-                throw new InvalidOptionValue('The delimiter must be one character long.');
+        if (isset($options['separator']) && is_string($options['separator'])) {
+            if (mb_strlen($options['separator']) > 1) {
+                throw new InvalidOptionValue('The separator must be one character long.');
             }
 
-            $this->options['delimiter'] = $options['delimiter'];
+            $this->options['separator'] = $options['separator'];
         }
     }
 
