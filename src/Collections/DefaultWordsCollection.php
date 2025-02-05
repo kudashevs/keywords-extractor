@@ -135,7 +135,7 @@ final class DefaultWordsCollection implements WordsCollection
         return $realPath . DIRECTORY_SEPARATOR . $name . '.txt';
     }
 
-    private function generateWordsFilePath(string $name): string
+    private function generateBuildFilePath(string $name): string
     {
         return $this->buildPath . DIRECTORY_SEPARATOR . $name . '.txt';
     }
@@ -155,7 +155,7 @@ final class DefaultWordsCollection implements WordsCollection
     {
         $rawWords = array_reduce($this->lists, function ($acc, $list) {
             $initFile = $this->generateInitFilePath($list);
-            $wordsFile = $this->generateWordsFilePath($list);
+            $wordsFile = $this->generateBuildFilePath($list);
 
             if (!file_exists($wordsFile)) {
                 copy($initFile, $wordsFile);
