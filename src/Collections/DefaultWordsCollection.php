@@ -65,10 +65,10 @@ final class DefaultWordsCollection implements WordsCollection
             $this->validateList($list);
 
             $initFile = $this->generateInitFilePath($list);
-            $listFile = $this->generateBuildFilePath($list);
+            $buildFile = $this->generateBuildFilePath($list);
 
-            if (!file_exists($listFile)) {
-                copy($initFile, $listFile);
+            if (!file_exists($buildFile)) {
+                copy($initFile, $buildFile);
             }
 
             $this->lists[] = $list;
