@@ -164,9 +164,9 @@ final class DefaultWordsCollection implements WordsCollection
     public function getWords(): array
     {
         $rawWords = array_reduce($this->lists, function ($acc, $list) {
-            $wordsFile = $this->generateBuildFilePath($list);
+            $buildFile = $this->generateBuildFilePath($list);
 
-            $words = @file($wordsFile, FILE_IGNORE_NEW_LINES) ?: [];
+            $words = @file($buildFile, FILE_IGNORE_NEW_LINES) ?: [];
 
             return array_merge($acc, $words);
         }, []);
