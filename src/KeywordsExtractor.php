@@ -74,7 +74,7 @@ class KeywordsExtractor
     {
         $this->initAssetsPath($options);
         $this->initAddWordsOption($options);
-        $this->initRemoveOption($options);
+        $this->initRemoveWordsOption($options);
         $this->initLengthOption($options);
     }
 
@@ -139,7 +139,7 @@ class KeywordsExtractor
     /**
      * @param array{remove_words?: string|array<array-key, string>} $options
      */
-    protected function initRemoveOption(array $options): void
+    protected function initRemoveWordsOption(array $options): void
     {
         if (!isset($options['remove_words'])) {
             return;
