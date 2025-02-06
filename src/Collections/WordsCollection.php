@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Kudashevs\KeywordsExtractor\Collections;
 
 /**
- * WordsCollection represents an abstraction with a named collection of words lists.
+ * WordsCollection represents an abstraction of a named collection of words.
  */
 interface WordsCollection
 {

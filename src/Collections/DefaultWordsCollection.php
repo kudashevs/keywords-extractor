@@ -6,9 +6,6 @@ namespace Kudashevs\KeywordsExtractor\Collections;
 
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 
-/**
- * WordsCollection represents a ValueObject with a collection of words lists.
- */
 final class DefaultWordsCollection implements WordsCollection
 {
     private const DEFAULT_INIT_LISTS_PATH = __DIR__ . '/../../assets/init';

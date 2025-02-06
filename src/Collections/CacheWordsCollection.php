@@ -6,9 +6,6 @@ namespace Kudashevs\KeywordsExtractor\Collections;
 
 use Kudashevs\KeywordsExtractor\Exceptions\InvalidOptionValue;
 
-/**
- * WordsCollection represents a ValueObject with a collection of words lists.
- */
 final class CacheWordsCollection implements WordsCollection
 {
     private const WORDS_CACHE_DIRECTORY = 'cache';
