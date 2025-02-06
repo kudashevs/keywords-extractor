@@ -17,12 +17,12 @@ composer require kudashevs/keywords-extractor
 
 ## Usage
 
-The key feature of the `keywords-extractor` library is the possibility to extract not just individual nouns, but the
-meaningful sequences of words that make more sense in some contexts. This possibility is provided by the [RAKE PHP](https://github.com/kudashevs/rake-php)
+The key feature of the `keywords-extractor` library is the possibility to extract not only individual nouns, but meaningful
+sequences of words that make more sense in some contexts. This possibility is provided by the [RAKE PHP](https://github.com/kudashevs/rake-php)
 library that is used as the default extraction algorithm. If this library doesn't suit your needs, it can be easily
 substituted with something more appropriate or relevant.
 
-The behavior of the `KeywordsExtractor` class is pretty straightforward. To extract keywords just call the `extract` method:
+The usage of the `KeywordsExtractor` class is pretty straightforward. To extract keywords call the `extract` method:
 ```php
 use Kudashevs\KeywordsExtractor\KeywordsExtractor;
 
