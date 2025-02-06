@@ -73,7 +73,7 @@ class KeywordsExtractor
     protected function initOptions(array $options): void
     {
         $this->initAssetsPath($options);
-        $this->initAddOption($options);
+        $this->initAddWordsOption($options);
         $this->initRemoveOption($options);
         $this->initLengthOption($options);
     }
@@ -113,7 +113,7 @@ class KeywordsExtractor
     /**
      * @param array{add_words?: string|array<array-key, string>} $options
      */
-    protected function initAddOption(array $options): void
+    protected function initAddWordsOption(array $options): void
     {
         if (!isset($options['add_words'])) {
             return;
