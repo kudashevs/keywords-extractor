@@ -42,7 +42,9 @@ final class CacheWordsCollection implements WordsCollection
 
         $buildPath = $this->generateBuildPath($path);
 
-        $this->makeDirectory($buildPath);
+        if (!file_exists($buildPath)) {
+            $this->makeDirectory($buildPath);
+        }
 
         $this->buildPath = $buildPath;
     }
@@ -73,15 +75,13 @@ final class CacheWordsCollection implements WordsCollection
 
     private function makeDirectory(string $path, int $permissions = 0755): void
     {
-        if (!file_exists($path) || !is_dir($path)) {
-            if (!mkdir($path, $permissions, false) && !is_dir($path)) {
-                throw new InvalidOptionValue(
-                    sprintf(
-                        'The script was not able to create the %s directory.',
-                        $path,
-                    )
-                );
-            }
+        if (!mkdir($path, $permissions, false) && !is_dir($path)) {
+            throw new InvalidOptionValue(
+                sprintf(
+                    'The script was not able to create the %s directory.',
+                    $path,
+                )
+            );
         }
     }
 
