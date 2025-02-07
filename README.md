@@ -52,7 +52,7 @@ print_r($keywords); // usage example, this
 
 Sometimes, there may be a necessity to provide a big number of words to be excluded or included. It can be done with the
 `add_words` and `remove_words` options. In some cases, the options are not convenient to use. For these cases the library
-introduces a concept of [words collections](Collections/WordsCollection.php) and correspondent asset files. To start using
+introduces a concept of [words collections](src/Collections/WordsCollection.php) and correspondent asset files. To start using
 them, provide an `assets_path` option to the `KeywordsExtractor` class. The instantiation process is going to create two
 different folders in the provided `assets` folder (once created, these files won't be modified):
 - `words` folder - contains default files used for words exclusions and words inclusions
@@ -65,7 +65,7 @@ because the words are included to a list of stop words and excluded from a list 
 ### Result length
 
 By default, the returning result is limitless, meaning that the length of the result is not limited. However, in some
-cases the length of the result does matter. For these cases the package introduces the concept of a [Limiter](Limiters/Limiter.php).
+cases the length of the result does matter. For these cases the package introduces the concept of a [Limiter](src/Limiters/Limiter.php).
 
 The library provides two possibilities to limit the result:
 - using the `limit_length` option (for more information please refer to [options](#options))
