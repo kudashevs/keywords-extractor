@@ -125,16 +125,27 @@ final class DefaultWordsCollection implements WordsCollection
         }
     }
 
+    /**
+     * @throws InvalidOptionValue
+     */
     private function generateBuildPath(string $path): string
     {
-        $realPath = (rtrim(realpath($path), '\/'));
+        $realPath = realpath($path) ?: throw new InvalidOptionValue(
+            sprintf("Error parsing %s path.", $path)
+        );
+        $trimmedPath = (rtrim($realPath, '\/'));
 
-        return $realPath . DIRECTORY_SEPARATOR . self::WORDS_LISTS_DIRECTORY;
+        return $trimmedPath . DIRECTORY_SEPARATOR . self::WORDS_LISTS_DIRECTORY;
     }
 
+    /**
+     * @throws InvalidOptionValue
+     */
     private function generateInitPath(): string
     {
-        return realpath(self::DEFAULT_INIT_LISTS_PATH);
+        return realpath(self::DEFAULT_INIT_LISTS_PATH) ?: throw new InvalidOptionValue(
+            sprintf("Error parsing %s path.", self::DEFAULT_INIT_LISTS_PATH)
+        );
     }
 
     private function generateInitFilePath(string $name): string
