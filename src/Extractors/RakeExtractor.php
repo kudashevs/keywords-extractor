@@ -16,6 +16,13 @@ final class RakeExtractor implements Extractor
 
     private Rake $extractor;
 
+    /**
+     * @var array{
+     *     assets_path: string,
+     *     default_exclusions: bool,
+     *     default_inclusions: bool,
+     * }
+     */
     private array $options = [
         'assets_path' => __DIR__ . '/../../assets/',
         'default_exclusions' => true,
@@ -39,6 +46,9 @@ final class RakeExtractor implements Extractor
         $this->initExtractor($options);
     }
 
+    /**
+     * @param array{add_words?: array<array-key, string>,remove_words?: array<array-key, string>,assets_path?: string,default_exclusions?: bool,default_inclusions?: bool} $options
+     */
     private function initOptions(array $options): void
     {
         $allowedOptions = $this->retrieveAllowedOptions($options);
@@ -46,6 +56,10 @@ final class RakeExtractor implements Extractor
         $this->options = array_merge($this->options, $allowedOptions);
     }
 
+    /**
+     * @param array{add_words?: array<array-key, string>,remove_words?: array<array-key, string>,assets_path?: string,default_exclusions?: bool,default_inclusions?: bool} $options
+     * @return array{add_words?: array<array-key, string>,remove_words?: array<array-key, string>,assets_path: string,default_exclusions: bool,default_inclusions: bool}
+     */
     private function retrieveAllowedOptions(array $options): array
     {
         return array_intersect_key($options, $this->options);
@@ -140,6 +154,12 @@ final class RakeExtractor implements Extractor
         ]);
     }
 
+    /**
+     * @param array{
+     *     include?: array<array-key, string>,
+     *     exclude?: array<array-key, string>,
+     * } $arguments
+     */
     private function cloneExtractor(array $arguments): Rake
     {
         return (function (array $arguments) {
