@@ -12,6 +12,12 @@ final class LengthLimiter implements Limiter
 
     const MAX_LIMIT_LENGTH = 255;
 
+    /**
+     * @var array{
+     *     separator: string,
+     *     max_length: int,
+     * }
+     */
     private array $options = [
         'separator' => ' ',
         'max_length' => self::MAX_LIMIT_LENGTH,

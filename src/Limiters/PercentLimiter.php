@@ -12,6 +12,13 @@ final class PercentLimiter implements Limiter
 
     const DEFAULT_PERCENT = 10;
 
+    /**
+     * @var array{
+     *     separator: string,
+     *     percent: int,
+     *     max_length: int,
+     * }
+     */
     private array $options = [
         'separator' => ' ',
         'percent' => self::DEFAULT_PERCENT,
