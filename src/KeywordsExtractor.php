@@ -29,8 +29,9 @@ class KeywordsExtractor
     /**
      * @var array{
      *     length: int,
-     *     add: array<array-key, string>,
-     *     remove: array<array-key, string>,
+     *     assets_path: string,
+     *     add_words: array<array-key, string>,
+     *     remove_words: array<array-key, string>,
      * }
      */
     protected array $options = [
@@ -78,6 +79,9 @@ class KeywordsExtractor
         $this->initLengthOption($options);
     }
 
+    /**
+     * @param array{assets_path?: string} $options
+     */
     protected function initAssetsPath(array $options): void
     {
         if (!isset($options['assets_path']) || !is_string($options['assets_path'])) {
@@ -236,7 +240,7 @@ class KeywordsExtractor
      *
      * @param string|array<array-key, string> $words
      */
-    public function addWords(string|array $words): static
+    public function addWords(string | array $words): static
     {
         $newWords = is_string($words) ? [$words] : $words;
         $this->extractor->addWords($newWords);
@@ -249,7 +253,7 @@ class KeywordsExtractor
      *
      * @param string|array<array-key, string> $words
      */
-    public function removeWords(string|array $words): static
+    public function removeWords(string | array $words): static
     {
         $newWords = is_string($words) ? [$words] : $words;
         $this->extractor->removeWords($newWords);
