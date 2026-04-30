@@ -82,11 +82,17 @@ final class CacheWordsCollection implements WordsCollection
         }
     }
 
+    /**
+     * @throws InvalidOptionValue
+     */
     private function generateBuildPath(string $path): string
     {
-        $realPath = (rtrim(realpath($path), '\/'));
+        $realPath = realpath($path) ?: throw new InvalidOptionValue(
+            sprintf("Error parsing %s path.", $path)
+        );
+        $trimmedPath = (rtrim($realPath, '\/'));
 
-        return $realPath . DIRECTORY_SEPARATOR . self::WORDS_CACHE_DIRECTORY;
+        return $trimmedPath . DIRECTORY_SEPARATOR . self::WORDS_CACHE_DIRECTORY;
     }
 
     /**
