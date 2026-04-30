@@ -14,10 +14,16 @@ final class DefaultWordsCollection implements WordsCollection
 
     private string $name;
 
+    /**
+     * @var array<array-key, string>
+     */
     private array $lists;
 
     private string $buildPath;
 
+    /**
+     * @param array<array-key, string> $wordsLists
+     */
     public function __construct(string $name, array $wordsLists, string $path = __DIR__ . '/../../assets/')
     {
         $this->initName($name);
@@ -54,7 +60,7 @@ final class DefaultWordsCollection implements WordsCollection
     }
 
     /**
-     * @param array<array-key, array> $lists
+     * @param array<array-key, string> $lists
      *
      * @throws InvalidOptionValue
      */

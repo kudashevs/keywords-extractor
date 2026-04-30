@@ -16,12 +16,18 @@ final class CacheWordsCollection implements WordsCollection
 
     private string $buildPath;
 
+    /**
+     * @param array<array-key, string> $wordsLists
+     */
     public function __construct(string $name, array $wordsLists, string $path = __DIR__ . '/../../assets/')
     {
         $this->initCollection($name, $wordsLists, $path);
         $this->initBuildPath($path);
     }
 
+    /**
+     * @param array<array-key, string> $wordsLists
+     */
     private function initCollection(string $name, array $wordsLists, string $path): void
     {
         $this->collection = new (self::DEFAULT_COLLECTION_CLASS)($name, $wordsLists, $path);
@@ -32,7 +38,7 @@ final class CacheWordsCollection implements WordsCollection
      *
      * @throws InvalidOptionValue
      */
-    private function initBuildPath(string $path)
+    private function initBuildPath(string $path): void
     {
         $this->validateExistingDirectory($path);
         $this->validateWritableDirectory($path);
@@ -129,6 +135,9 @@ final class CacheWordsCollection implements WordsCollection
         return $this->buildPath . DIRECTORY_SEPARATOR . $name . '.' . $extension;
     }
 
+    /**
+     * @return array<array-key, string>
+     */
     private function getCached(): array
     {
         $serializedWords = @file_get_contents($this->generateCacheFilePath($this->collection->getName())) ?: "";
@@ -141,6 +150,10 @@ final class CacheWordsCollection implements WordsCollection
         ) ?: [];
     }
 
+    /**
+     * @param array<array-key, string> $words
+     * @return bool
+     */
     private function cache(array $words): bool
     {
         $serializedWords = serialize($words);
